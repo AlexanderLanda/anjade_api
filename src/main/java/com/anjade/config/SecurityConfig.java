@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +24,34 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+	 @Bean
+	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	        http
+	            .cors().and().csrf().disable()
+	            .authorizeRequests(authorizeRequests ->
+	                authorizeRequests.anyRequest().authenticated()
+	            );
+	        return http.build();
+	    }
+
+	    @Bean
+	    public CorsFilter corsFilter() {
+	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	        CorsConfiguration config = new CorsConfiguration();
+	        config.setAllowCredentials(true);
+	        config.addAllowedOrigin("http://localhost:8080");
+	        config.addAllowedOrigin("https://anjade.es");
+	        config.addAllowedHeader("*");
+	        config.addAllowedMethod("GET");
+	        config.addAllowedMethod("POST");
+	        config.addAllowedMethod("PUT");
+	        config.addAllowedMethod("DELETE");
+	        config.addAllowedMethod("OPTIONS");
+	        source.registerCorsConfiguration("/**", config);
+	        return new CorsFilter(source);
+	    }
+	
+	/*
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and()
@@ -47,4 +77,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    */
 }
