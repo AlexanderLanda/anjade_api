@@ -56,7 +56,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "${frontend.url}")
+//@CrossOrigin(origins = "${frontend.url}")
 public class EntityController {
 	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url

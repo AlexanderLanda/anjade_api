@@ -1,5 +1,6 @@
 package com.anjade.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -10,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -26,12 +26,14 @@ public class SecurityConfig {
 
 	 @Bean
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	        http
-	            .cors().and().csrf().disable()
-	            .authorizeRequests(authorizeRequests ->
-	                authorizeRequests.anyRequest().authenticated()
-	            );
-	        return http.build();
+		 http
+         .cors().and().csrf().disable()
+         .authorizeRequests(authorizeRequests ->
+             authorizeRequests
+                 .requestMatchers("/api/v1/**").permitAll() // Permite todas las rutas dentro de /api/v1/
+                 .anyRequest().authenticated()
+         );
+     return http.build();
 	    }
 
 	    @Bean
@@ -39,9 +41,7 @@ public class SecurityConfig {
 	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	        CorsConfiguration config = new CorsConfiguration();
 	        config.setAllowCredentials(true);
-	        config.addAllowedOrigin("http://localhost:4200");
-	        config.addAllowedOrigin("http://localhost:8080");
-	        config.addAllowedOrigin("https://anjade.es");
+	        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://anjade.es","http://localhost:4200"));
 	        config.addAllowedHeader("*");
 	        config.addAllowedMethod("GET");
 	        config.addAllowedMethod("POST");
