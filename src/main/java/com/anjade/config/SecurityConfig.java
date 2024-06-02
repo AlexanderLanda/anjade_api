@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -25,17 +26,29 @@ public class SecurityConfig {
     }
 
 	 @Bean
-	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		 http
-         .cors().and().csrf().disable()
-         .authorizeRequests(authorizeRequests ->
-             authorizeRequests
-                 .requestMatchers("/api/v1/**").permitAll() // Permite todas las rutas dentro de /api/v1/
-                 .anyRequest().authenticated()
-         );
-     return http.build();
-	    }
+	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	        http
+	            .cors(cors -> cors
+	                .configurationSource(request -> {
+	                    var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+	                    corsConfiguration.setAllowedOrigins(List.of("https://anjade.es"));
+	                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	                    corsConfiguration.setAllowedHeaders(List.of("*"));
+	                    corsConfiguration.setAllowCredentials(true);
+	                    return corsConfiguration;
+	                })
+	            )
+	            .csrf(csrf -> csrf
+	                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+	            )
+	            .authorizeHttpRequests(authorize -> authorize
+	                .requestMatchers("/api/**").permitAll()
+	                .anyRequest().authenticated()
+	            );
 
+	        return http.build();
+	    }
+/*
 	    @Bean
 	    public CorsFilter corsFilter() {
 	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

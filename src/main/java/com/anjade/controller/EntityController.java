@@ -54,6 +54,8 @@ import com.anjade.service.UsuariosService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1")
 //@CrossOrigin(origins = "${frontend.url}")
@@ -112,6 +114,17 @@ public class EntityController {
 		this.tipoDocumentoService = tipoDocumentoService;
 		this.tipoPagoService = tipoPagoService;
 }
+	
+	@GetMapping("/apiendpoint")
+    public String handleRequest(HttpServletRequest request) {
+        String origin = request.getHeader("Origin");
+        // Aquí puedes imprimir o registrar la URL de origen para verificarla
+        System.out.println("La solicitud proviene de: " + origin);
+        
+        // Resto del código de manejo de la solicitud...
+        
+        return "Respuesta de la API";
+    }
 	
 	@GetMapping("/{entity}/{id}")
 	public ResponseEntity<Object> getById(@PathVariable String entity, @PathVariable Long id) {

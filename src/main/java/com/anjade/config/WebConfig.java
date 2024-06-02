@@ -23,6 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
 	            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 	            .allowedHeaders("*")
 	            .allowCredentials(true);
-	        registry.addMapping("/procesar_pago").allowedOrigins("http://localhost:4200");
+	        registry.addMapping("/procesar_pago").allowedOrigins("http://anjade.es");
 	    }*/
 }
