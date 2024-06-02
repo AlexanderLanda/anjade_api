@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "${frontend.url}")
 public class UsuariosController {
 	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
