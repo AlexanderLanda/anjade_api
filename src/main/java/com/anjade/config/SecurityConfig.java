@@ -31,15 +31,15 @@ public class SecurityConfig {
 	            .cors(cors -> cors
 	                .configurationSource(request -> {
 	                    var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-	                    corsConfiguration.setAllowedOrigins(List.of("https://anjade.es","http://localhost:4200"));
+	                    corsConfiguration.setAllowedOrigins(List.of("https://anjade.es","http://localhost:4200","http://localhost:8080"));
 	                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 	                    corsConfiguration.setAllowedHeaders(List.of("*"));
 	                    corsConfiguration.setAllowCredentials(true);
 	                    return corsConfiguration;
 	                })
 	            )
-	            .csrf(csrf -> csrf
-	                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+	            .csrf(csrf -> csrf.disable()
+	                //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 	            )
 	            .authorizeHttpRequests(authorize -> authorize
 	                .requestMatchers("/api/**").permitAll()
