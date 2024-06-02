@@ -56,8 +56,8 @@ public class RedsysController {
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
         params.put("Ds_Merchant_MerchantURL", "http://localhost:8080/api/payment/response");
-        params.put("Ds_Merchant_UrlOK", "http://localhost:4200/success");
-        params.put("Ds_Merchant_UrlKO",  "http://localhost:4200/failure");
+        params.put("Ds_Merchant_UrlOK", "https://anjade.es/success");
+        params.put("Ds_Merchant_UrlKO",  "https://anjade.es/failure");
         if (tipoPago==BIZUM) {
         	params.put("Ds_Merchant_PayMethods",  "z");
 		}
