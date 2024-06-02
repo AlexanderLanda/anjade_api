@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
-@CrossOrigin(origins = "${frontend.url}")
 public class RedsysResponseController {
 	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url

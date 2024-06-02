@@ -75,7 +75,7 @@ public class UsuariosController {
 			}
 			
 			UsuariosDto usuarioGuardado = usuariosService.saveOrUpdate(usuarioDto);
-			 emailService.sendWelcomeEmail("alexanderlandagrandales@gmail.com",usuarioGuardado.getIdAfiliacion());
+			 emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(),usuarioGuardado.getIdAfiliacion());
 	        return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();

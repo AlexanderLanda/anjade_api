@@ -17,7 +17,6 @@ import com.anjade.service.UsuariosService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "${frontend.url}")
 public class AuthController {
 
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
