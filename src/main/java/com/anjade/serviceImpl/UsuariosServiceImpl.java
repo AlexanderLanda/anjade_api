@@ -86,7 +86,7 @@ public class UsuariosServiceImpl implements UsuariosService {
 	@Override
 	public Optional<UsuariosDto> login(String idAfiliacion, String password) {
 		 Optional<UsuariosDto> user = Optional.ofNullable(usuarioRepository.findByIdAfiliacion(idAfiliacion));
-	        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword()) && user.get().getEstadoCuenta().getEstado().equalsIgnoreCase("Activo")) {
+	        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword()) && user.get().getEstadoCuenta().getEstado().equalsIgnoreCase("Aprobado")) {
 	            return user;
 	        }
 	        return Optional.empty();
