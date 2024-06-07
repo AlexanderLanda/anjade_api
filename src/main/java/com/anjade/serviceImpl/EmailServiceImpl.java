@@ -53,4 +53,14 @@ public class EmailServiceImpl implements EmailService {
 		        e.printStackTrace();
 		    }
 	    }
+	 
+	 public  void sendRedsysResponseEmail(String toEmail, String response) {
+		 SimpleMailMessage message = new SimpleMailMessage();
+		    message.setTo(toEmail);
+		    message.setSubject("Response Pruebas redsys");
+		    message.setText("Response: "+response);
+		    message.setFrom("anjade@anjade.es");
+		    mailSender.send(message);
+	 }
+
 }
