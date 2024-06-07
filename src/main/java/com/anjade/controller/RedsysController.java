@@ -55,9 +55,9 @@ public class RedsysController {
         params.put("Ds_Merchant_Currency", CURRENCY);
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
-        params.put("Ds_Merchant_MerchantURL", "http://localhost:8080/api/payment/response");
-        params.put("Ds_Merchant_UrlOK", "https://anjade.es/success");
-        params.put("Ds_Merchant_UrlKO",  "https://anjade.es/failure");
+        params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/redsysresponse");
+        params.put("Ds_Merchant_UrlOK", "https://localhost:4200/success");//"https://anjade.es/success"
+        params.put("Ds_Merchant_UrlKO",  "https://localhost:4200/failure");//"https://anjade.es/failure"
         if (tipoPago==BIZUM) {
         	params.put("Ds_Merchant_PayMethods",  "z");
 		}
