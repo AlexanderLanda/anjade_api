@@ -37,14 +37,15 @@ public class RedsysController {
     private static final int BIZUM = 2; // Tipo de transacción por defecto
 
     @PostMapping("/create-payment")
-    public Map<String, String> createPayment(@RequestParam("tipoPago") int tipoPago) throws Exception {
+    public Map<String, String> createPayment(@RequestParam("tipoPago") int tipoPago,@RequestParam("idAfiliacion") String idAfiliacion) throws Exception {
     	// Crear un formato para la fecha y hora actual
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
         // Obtener la fecha y hora actual como una cadena
         String timestamp = LocalDateTime.now().format(formatter);
-
-        String order = "AF"+timestamp.substring(timestamp.length()-6, timestamp.length()); // ID único del pedido
+        /*"AF"+timestamp.substring(timestamp.length()-6, timestamp.length());*/ // ID único del pedido
+        
+        String order =idAfiliacion;
         String amount = "1000"; // Monto en céntimos (10 euros)
 
         System.out.println("OR_" +order);
@@ -55,15 +56,16 @@ public class RedsysController {
         params.put("Ds_Merchant_Currency", CURRENCY);
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
-        params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/redsysresponse");
-        params.put("Ds_Merchant_UrlOK", "https://localhost:4200/success");//"https://anjade.es/success"
-        params.put("Ds_Merchant_UrlKO",  "https://localhost:4200/failure");//"https://anjade.es/failure"
+        params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/response");
+        params.put("Ds_Merchant_UrlOK", "https://anjade.es");//"https://anjade.es/success" "https://localhost:4200/success"
+        params.put("Ds_Merchant_UrlKO",  "https://anjade.es");//"https://anjade.es/failure" "https://localhost:4200/failure"
         if (tipoPago==BIZUM) {
         	params.put("Ds_Merchant_PayMethods",  "z");
 		}
         
 
         String paramsJson = Base64.getEncoder().encodeToString(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsBytes(params));
+        System.out.println("paramsJson:"+paramsJson);
         String signature = createSignature(order, paramsJson);
 
         Map<String, String> response = new HashMap<>();

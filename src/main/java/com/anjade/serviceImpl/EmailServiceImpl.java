@@ -62,5 +62,66 @@ public class EmailServiceImpl implements EmailService {
 		    message.setFrom("anjade@anjade.es");
 		    mailSender.send(message);
 	 }
+	 
+
+	@Override
+	public void sendEmailConfirmacionPago(String toEmail, String idAfiliacion) {
+		MimeMessage message = mailSender.createMimeMessage();
+	    try {
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        helper.setTo(toEmail);
+	        helper.setSubject("Confirmación de pago Afiliación ANJADE");
+
+	        // HTML content
+	        String htmlContent = "<html><body>"
+	                + "<p>Afiliado: " + idAfiliacion + " hemos recibido correctamente vuestro pago de afiiación anual.</p>"
+	                + "<img src='cid:imagen'/>"
+	                + "</body></html>";
+	        helper.setText(htmlContent, true);
+
+	        // Add the image as an attachment with content ID
+	        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+	        helper.addInline("imagen", image);
+
+	        // Set sender
+	        helper.setFrom("anjade@anjade.es");
+
+	        // Send the email
+	        mailSender.send(message);
+	    } catch (MessagingException e) {
+	        e.printStackTrace();
+	    }
+		
+	}
+
+	@Override
+	public void sendEmailDePagoRechazado(String toEmail, String idAfiliacion) {
+		MimeMessage message = mailSender.createMimeMessage();
+	    try {
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        helper.setTo(toEmail);
+	        helper.setSubject("Confirmación de pago Afiliación ANJADE");
+
+	        // HTML content
+	        String htmlContent = "<html><body>"
+	                + "<p>Afiliado: " + idAfiliacion + " no hemos recibido correctamente vuestro pago de afiiación anual. Por favor conactar con administración.</p>"
+	                + "<img src='cid:imagen'/>"
+	                + "</body></html>";
+	        helper.setText(htmlContent, true);
+
+	        // Add the image as an attachment with content ID
+	        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+	        helper.addInline("imagen", image);
+
+	        // Set sender
+	        helper.setFrom("anjade@anjade.es");
+
+	        // Send the email
+	        mailSender.send(message);
+	    } catch (MessagingException e) {
+	        e.printStackTrace();
+	    }
+		
+	}
 
 }
