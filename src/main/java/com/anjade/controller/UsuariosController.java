@@ -26,19 +26,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UsuariosController {
-	
+
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
-    private String frontendUrl;
-	
+	private String frontendUrl;
+
 	@Autowired
 	private final UsuariosService usuariosService;
-	
+
 	@Autowired
-    private EmailService emailService;
+	private EmailService emailService;
 
 	public UsuariosController(UsuariosService usuariosService) {
 		this.usuariosService = usuariosService;
@@ -54,34 +53,28 @@ public class UsuariosController {
 	public ResponseEntity<UsuariosDto> saveOrUpdate(@RequestBody String json) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			UsuariosDto usuarioDto = objectMapper.readValue(json,
-					new TypeReference<UsuariosDto>() {
-					});
-			System.out.println("id_user:"+usuarioDto.getId_user());
-			if (usuarioDto.getId_user()==null) {
+			UsuariosDto usuarioDto = objectMapper.readValue(json, new TypeReference<UsuariosDto>() {
+			});
+			System.out.println("id_user:" + usuarioDto.getId_user());
+			if (usuarioDto.getId_user() == null) {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				String timestamp = LocalDateTime.now().format(formatter);
-				String idAfi = "A"+timestamp.substring(timestamp.length()-9, timestamp.length()); // ID único del pedido
-		        
+				String idAfi = "A" + timestamp.substring(timestamp.length() - 6, timestamp.length()); // ID único del
+																										// pedido
+
 				usuarioDto.setIdAfiliacion(idAfi);
-				if (usuarioDto.getTipoPago().getId()==3||usuarioDto.getTipoPago().getId()==4) {
-					EstadosUsuariosDto estado = new EstadosUsuariosDto(3L,"pendiente de pago");
-					usuarioDto.setEstadoCuenta(estado);
-				}else {
-					EstadosUsuariosDto estado = new EstadosUsuariosDto(4L,"pendiente de revision");
-					usuarioDto.setEstadoCuenta(estado);
-					
-				}
+				EstadosUsuariosDto estado = new EstadosUsuariosDto(3L, "pendiente de pago");
+				usuarioDto.setEstadoCuenta(estado);
 			}
-			
+
 			UsuariosDto usuarioGuardado = usuariosService.saveOrUpdate(usuarioDto);
-			 emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(),usuarioGuardado.getIdAfiliacion());
-	        return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
+			emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(), usuarioGuardado.getIdAfiliacion());
+			return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 	}
 
 	@DeleteMapping("/{id}")
@@ -89,7 +82,5 @@ public class UsuariosController {
 		usuariosService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
-	
-	
 
 }
