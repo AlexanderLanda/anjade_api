@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anjade.service.EmailService;
 import com.anjade.service.RedsysResponseNotification;
-import com.anjade.serviceImpl.RedsysResponseNotificationImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -38,7 +37,7 @@ public class RedsysResponseController {
         String merchantParameters = parseParameters.get("Ds_MerchantParameters");
         String signature = parseParameters.get("Ds_Signature");
         
-        redsysResponseServiceNotification.readNotificatinoRedsysResponse(merchantParameters);
+       // redsysResponseServiceNotification.readNotificatinoRedsysResponse(merchantParameters);
         
     }
 	

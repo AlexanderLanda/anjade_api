@@ -83,22 +83,7 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.14.0</version>
 		</dependency>
-		<dependency>
-			<groupId>sis.redsys</groupId>
-			<artifactId>redsys-api</artifactId>
-			<version>1.0</version> <!-- o la versión que corresponda -->
-			<scope>system</scope>
-			<systemPath>C:/Users/LANDA/eclipse-workspace/anjadeApi/lib/sis-rest-api.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>apiSha256</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>
-				C:/Users/LANDA/eclipse-workspace/anjadeApi/lib/apiSha256.jar</systemPath>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
