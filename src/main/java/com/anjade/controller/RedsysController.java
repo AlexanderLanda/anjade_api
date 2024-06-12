@@ -34,7 +34,8 @@ public class RedsysController {
     private static final String TRANSACTION_TYPE = "0"; // Tipo de transacción por defecto
     private static final String MERCHANT_SECRET_KEY ="CmDrfIpxp9NVOJ4M8CbK7dU8YPR+JXX1";// Clave del comercio entorno real, Base64
     private static final String MERCHANT_SECRET_KEY_TEST = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"; // Clave del comercio de pruebas, Base64
-    private static final String REDSYS_URL = "https://sis-t.redsys.es:25443/sis/realizarPago";
+    private static final String REDSYS_URL_TEST = "https://sis-t.redsys.es:25443/sis/realizarPago";
+    private static final String REDSYS_URL = "https://sis.redsys.es/sis/realizarPago";
     private static final int BIZUM = 2; // Tipo de transacción por defecto
 
     @PostMapping("/create-payment")
@@ -47,9 +48,9 @@ public class RedsysController {
         /*"AF"+timestamp.substring(timestamp.length()-6, timestamp.length());*/ // ID único del pedido
         
         String order =idAfiliacion;
-        String amount = "1000"; // Monto en céntimos (10 euros)
+        String amount = "2500"; // Monto en céntimos (10 euros)
 
-        System.out.println("OR_" +order);
+        System.out.println(order);
         Map<String, String> params = new HashMap<>();
         params.put("Ds_Merchant_Amount", amount);
         params.put("Ds_Merchant_Order", order);
