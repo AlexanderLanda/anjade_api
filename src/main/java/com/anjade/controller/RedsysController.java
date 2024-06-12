@@ -32,7 +32,8 @@ public class RedsysController {
     private static final String TERMINAL = "1"; // Número de terminal de pruebas
     private static final String CURRENCY = "978"; // EUR
     private static final String TRANSACTION_TYPE = "0"; // Tipo de transacción por defecto
-    private static final String MERCHANT_SECRET_KEY = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"; // Clave del comercio de pruebas, Base64
+    private static final String MERCHANT_SECRET_KEY ="CmDrfIpxp9NVOJ4M8CbK7dU8YPR+JXX1";// Clave del comercio entorno real, Base64
+    private static final String MERCHANT_SECRET_KEY_TEST = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"; // Clave del comercio de pruebas, Base64
     private static final String REDSYS_URL = "https://sis-t.redsys.es:25443/sis/realizarPago";
     private static final int BIZUM = 2; // Tipo de transacción por defecto
 
