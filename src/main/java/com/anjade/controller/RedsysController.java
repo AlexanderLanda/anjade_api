@@ -59,8 +59,8 @@ public class RedsysController {
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
         params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/response");
-        params.put("Ds_Merchant_UrlOK", "https://anjade.es");//"https://anjade.es/success" "https://localhost:4200/success"
-        params.put("Ds_Merchant_UrlKO",  "https://anjade.es");//"https://anjade.es/failure" "https://localhost:4200/failure"
+        params.put("Ds_Merchant_UrlOK", "https://anjade.es/formulario");//"https://anjade.es/formulario" "https://localhost:4200/formulario"
+        params.put("Ds_Merchant_UrlKO",  "https://anjade.es/");//"https://anjade.es/" "https://localhost:4200/"
         if (tipoPago==BIZUM) {
         	params.put("Ds_Merchant_PayMethods",  "z");
 		}
@@ -83,7 +83,7 @@ public class RedsysController {
 
     private String createSignature(String order, String data) throws Exception {
         // Decodifica la clave secreta
-        byte[] keyBytes = Base64.getDecoder().decode(MERCHANT_SECRET_KEY);
+        byte[] keyBytes = Base64.getDecoder().decode(MERCHANT_SECRET_KEY);//MERCHANT_SECRET_KEY_TEST  MERCHANT_SECRET_KEY
         
         // Asegura que el número de pedido tiene una longitud múltiplo de 8 bytes
         byte[] orderBytes = padOrder(order.getBytes(StandardCharsets.UTF_8), 8);
