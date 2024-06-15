@@ -2,6 +2,7 @@
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -311,17 +312,29 @@ public class EntityController {
 	    				CuestionarioFromDto cuestionario = objectMapper.readValue(json, CuestionarioFromDto.class);
 	    				Map<String, Object> mapa = objectMapper.readValue(json, new TypeReference<Map<String, Object>>() {});
 	    				UsuariosDto getUsuarioDto = usuariosService.getByIdAfiliacion(String.valueOf(mapa.get("idAfiliacion")));
-	    				List<CuestionarioDto> cuestionarios = cuestionarioService.getAllCuestionarios();
-	    				for (CuestionarioDto cuestionarioDto : cuestionarios) {
-	    					UserCuestionarioDto aux = new UserCuestionarioDto(getUsuarioDto,cuestionarioDto,String.valueOf(mapa.get(cuestionarioDto.getNombreCampo())));
-						System.out.println(aux.getRespuesta()+"-"+aux.getCuestionario().getPregunta());
-						userCuestionarioService.saveOrUpdate(aux);
+	    				if (getUsuarioDto!=null) {
+	    					List<CuestionarioDto> cuestionarios = cuestionarioService.getAllCuestionarios();
+		    				for (CuestionarioDto cuestionarioDto : cuestionarios) {
+		    					UserCuestionarioDto aux = new UserCuestionarioDto(getUsuarioDto,cuestionarioDto,String.valueOf(mapa.get(cuestionarioDto.getNombreCampo())));
+							System.out.println(aux.getRespuesta()+"-"+aux.getCuestionario().getPregunta());
+							userCuestionarioService.saveOrUpdate(aux);
+		    				}
+		    				System.out.println("Registro completo");
+		    				Map<String, String> response = new HashMap<>();
+		    	            response.put("message", "Operación realizada exitosamente");
+		    	            return ResponseEntity.ok(response);	
+						}
+	    				else {
+	    					Map<String, String> response = new HashMap<>();
+		    	            response.put("message", "No puede enviar el Cuestionario sin Número de Afiliación");
+		    	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	    				}
+	    				
 	                } catch (Exception e) {
 	                    e.printStackTrace();
+	                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
 	                }
-	    			break;	
-	    		case "usercuestionario":
+		case "usercuestionario":
 	    			try {
 	    				List<UserCuestionarioDto> userCuestionariosList = objectMapper.readValue(json, new TypeReference<List<UserCuestionarioDto>>(){});
 	                    for (UserCuestionarioDto cuestionario : userCuestionariosList) {

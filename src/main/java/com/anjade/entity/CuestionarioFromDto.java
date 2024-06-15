@@ -15,7 +15,8 @@ public class CuestionarioFromDto {
     private boolean colaborarAsociacion;
     private String tipoColaboracion;
     private String comisionColaboracion;
-    private List<String> idiomas;
+    private String idiomas;
+    //private List<String> idiomas;
     private boolean tiempoLibre;
     private boolean desplazamiento;
     private boolean delegacionColaboracion;
@@ -199,13 +200,13 @@ public class CuestionarioFromDto {
 
 
 
-	public List<String> getIdiomas() {
+	public  String getIdiomas() {
 		return idiomas;
 	}
 
 
 
-	public void setIdiomas(List<String> idiomas) {
+	public void setIdiomas(String idiomas) {
 		this.idiomas = idiomas;
 	}
 
@@ -358,7 +359,7 @@ public class CuestionarioFromDto {
 	public CuestionarioFromDto(String nombreApellidos, LocalidadDto localidad, String telefono, String correo,
 			String profesionLaboral, String situacionActual, int deporte, String anosActivoCategorias,
 			String otrasActividades, boolean colaborarAsociacion, String tipoColaboracion, String comisionColaboracion,
-			List<String> idiomas, boolean tiempoLibre, boolean desplazamiento, boolean delegacionColaboracion,
+			String idiomas, boolean tiempoLibre, boolean desplazamiento, boolean delegacionColaboracion,
 			String darClases, boolean selectedDarClases, boolean organizarEventosDeportivos,
 			boolean reunionesAsociacion, boolean mediador, boolean ayudaAgresiones, String opinionAsociacion,
 			String mejorasAsociacion, UsuariosDto usuarioDto,String idAfiliacion) {
