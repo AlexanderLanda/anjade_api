@@ -82,5 +82,11 @@ public class UsuariosController {
 		usuariosService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
+	
+	@GetMapping("/validate-email")
+    public ResponseEntity<Boolean> validateEmail(@RequestParam String email) {
+        boolean exists = usuariosService.emailExists(email);
+        return ResponseEntity.ok(exists);
+    }
 
 }

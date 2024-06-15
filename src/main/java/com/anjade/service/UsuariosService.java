@@ -21,4 +21,6 @@ public interface UsuariosService {
 	UsuariosDto getByIdAfiliacion(String id);
 
 	Optional<UsuariosDto> login(String idAfiliacion, String password);
+	
+	boolean emailExists(String email);
 }

@@ -94,6 +94,11 @@ public class UsuariosServiceImpl implements UsuariosService {
 	        }
 	        return Optional.empty();
 	    }
+	
+	@Override
+	public boolean emailExists(String email) {
+        return usuarioRepository.findByCorreo(email).isPresent();
+    }
 
 //passwordEncoder.matches(password, user.get().getPassword())
 	//password.equalsIgnoreCase(user.get().getPassword())  
