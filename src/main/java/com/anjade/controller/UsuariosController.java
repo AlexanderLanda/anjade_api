@@ -101,4 +101,10 @@ public class UsuariosController {
         return ResponseEntity.ok(exists);
     }
 
+	@GetMapping("/validate-idAfiliacion")
+    public ResponseEntity<Boolean> validateIDAfiliacion(@RequestParam String id) {
+        boolean exists = usuariosService.idAfiliacionExists(id);
+        return ResponseEntity.ok(exists);
+    }
+	
 }

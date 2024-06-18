@@ -23,4 +23,6 @@ public interface UsuariosService {
 	Optional<UsuariosDto> login(String idAfiliacion, String password);
 	
 	boolean emailExists(String email);
+
+	boolean idAfiliacionExists(String id);
 }

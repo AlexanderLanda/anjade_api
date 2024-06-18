@@ -100,6 +100,20 @@ public class UsuariosServiceImpl implements UsuariosService {
         return usuarioRepository.findByCorreo(email).isPresent();
     }
 
+	@Override
+	public boolean idAfiliacionExists(String id) {
+		Optional<UsuariosDto> user = Optional.ofNullable(usuarioRepository.findByIdAfiliacion(id));
+		if (user.isPresent()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+        
+    }
+
+	
 //passwordEncoder.matches(password, user.get().getPassword())
 	//password.equalsIgnoreCase(user.get().getPassword())  
 
