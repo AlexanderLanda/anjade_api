@@ -11,7 +11,7 @@ public interface DeportesService {
 	
 	DeportesDto getDeportesById(Long id);
 	
-	void saveOrUpdate(DeportesDto deporte);
+	DeportesDto saveOrUpdate(DeportesDto deporte);
 	
 	void delete(Long id);
 }

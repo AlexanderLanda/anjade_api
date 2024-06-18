@@ -44,9 +44,8 @@ public class UsuariosDto {
     @JoinColumn(name = "deporte")
 	private DeportesDto deporte;
 	
-	@ManyToOne
     @JoinColumn(name = "localidad")
-	private LocalidadDto localidad;
+	private String localidad;
 	
 	@Column(name = "documento")
 	private String documento;
@@ -105,7 +104,7 @@ public class UsuariosDto {
 
 	
 	public UsuariosDto(Long id_user, String nombre, String apellidos, Date fechaNacimiento, String direccion,
-			String correo, DeportesDto deporte, LocalidadDto localidad, String documento, String codigoPostal,
+			String correo, DeportesDto deporte, String localidad, String documento, String codigoPostal,
 			ProvinciaDto provincia, String telefono, AfiliadosFuncionDto afiliadosFuncion,
 			AfiliadosCategoriasDto afiliadosCategoria, UsuariosRolDto usuariorol, EstadosUsuariosDto estadoCuenta,
 			String observaciones, String password, Date fechaAfiliacion, String federacion, TipoPagoDto tipoPago,
@@ -232,13 +231,13 @@ public class UsuariosDto {
 
 
 
-	public LocalidadDto getLocalidad() {
+	public String getLocalidad() {
 		return localidad;
 	}
 
 
 
-	public void setLocalidad(LocalidadDto localidad) {
+	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
 

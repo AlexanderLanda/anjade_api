@@ -39,10 +39,18 @@ public class DeportesServiceImpl implements DeportesService {
 	}
 
 	@Override
-	public void saveOrUpdate(DeportesDto deporte) {
+	public DeportesDto saveOrUpdate(DeportesDto deporte) {
 
-		deportesRepository.save(deporte);		
+		return deportesRepository.save(deporte);		
 	}
+	
+	@Override
+	public DeportesDto getDeportesByNombre(String nombre) {
+		 
+		DeportesDto deporte = deportesRepository.findByNombre(getDeportesByNombre).orElseThrow(() -> new DeportesNotFoundException("Deporte no encontrado"));
+	    return deporte;
+	}
+	
 
 	@Override
 	public void delete(Long deporte) {

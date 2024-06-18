@@ -268,10 +268,9 @@ public class EntityController {
 	            	break;
 	            case "deportes":
 	                try {
-	                	List<DeportesDto> deportesList = objectMapper.readValue(json, new TypeReference<List<DeportesDto>>(){});
-	                    for (DeportesDto deportesDto : deportesList) {
-	                        deportesService.saveOrUpdate(deportesDto);
-	                    }
+	                	DeportesDto deportesList = (DeportesDto) objectMapper.readValue(json, new TypeReference<DeportesDto>(){});
+	                    	DeportesDto deportesDto  =  deportesService.saveOrUpdate(deportesList);
+	                        return new ResponseEntity<>(deportesDto, HttpStatus.CREATED);
 	                } catch (Exception e) {
 	                    e.printStackTrace();
 	                }

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anjade.entity.DeportesDto;
 import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.UsuariosDto;
+import com.anjade.service.DeportesService;
 import com.anjade.service.EmailService;
 import com.anjade.service.UsuariosService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,6 +40,9 @@ public class UsuariosController {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private DeportesService deportesService;
 
 	public UsuariosController(UsuariosService usuariosService) {
 		this.usuariosService = usuariosService;
@@ -66,7 +71,14 @@ public class UsuariosController {
 				EstadosUsuariosDto estado = new EstadosUsuariosDto(3L, "pendiente de pago");
 				usuarioDto.setEstadoCuenta(estado);
 			}
-
+			
+			 DeportesDto deporte = usuarioDto.getDeporte();
+		        if (deporte != null && deporte.getId() == 0) {
+		        	deporte = deportesService.saveOrUpdate(deporte);
+		        }
+		        System.out.println(deporte.getId());
+		        usuarioDto.setDeporte(deporte);
+			
 			UsuariosDto usuarioGuardado = usuariosService.saveOrUpdate(usuarioDto);
 			emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(), usuarioGuardado.getIdAfiliacion());
 			return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
