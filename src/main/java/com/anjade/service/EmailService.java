@@ -8,5 +8,7 @@ public interface EmailService {
 
 	void sendEmailConfirmacionPago(String toEmail, String idAfiliacion);
 
+	void sendEmailError(Object error);
+	
 	 void sendEmailDePagoRechazado(String toEmail, String idAfiliacion) ;
 }

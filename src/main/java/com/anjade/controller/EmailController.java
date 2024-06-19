@@ -27,4 +27,12 @@ public class EmailController {
 
 		return ResponseEntity.ok("Email enviado correctamente.");
 	}
+	
+	@PostMapping("/send-error-email")
+	public ResponseEntity<String> sendErrorEmail(@RequestBody Object request) {
+
+		emailService.sendEmailError(request);
+
+		return ResponseEntity.ok("Email enviado correctamente.");
+	}
 }

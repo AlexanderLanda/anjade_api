@@ -83,6 +83,7 @@ public class UsuariosController {
 			emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(), usuarioGuardado.getIdAfiliacion());
 			return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
 		} catch (Exception e) {
+			emailService.sendEmailError(e);
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

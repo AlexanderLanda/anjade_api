@@ -124,4 +124,29 @@ public class EmailServiceImpl implements EmailService {
 		
 	}
 
+	@Override
+	public void sendEmailError(Object error) {
+		// TODO Auto-generated method stub
+		MimeMessage message = mailSender.createMimeMessage();
+	    try {
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        helper.setTo("administracion@anjade.es");
+	        helper.setSubject("Error anjade.es");
+
+	        // HTML content
+	        String htmlContent = String.valueOf(error);
+	        helper.setText(htmlContent, true);
+
+	        // Set sender
+	        helper.setFrom("anjade@anjade.es");
+
+	        // Send the email
+	        mailSender.send(message);
+	    } catch (MessagingException e) {
+	        e.printStackTrace();
+	    }
+		
+		
+	}
+
 }
