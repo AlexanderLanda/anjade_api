@@ -55,7 +55,7 @@ public class UsuariosServiceImpl implements UsuariosService {
 		
 		user.setFechaAfiliacion(new Date());
 		long totalUsuarios = usuarioRepository.count();
-        String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1051);
+        String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1061);
         user.setIdAfiliacion(numeroAfiliacion);
 		if((user.getPassword()!=null&&!user.getPassword().isEmpty())&&user.getPassword().length()<25) {
 			String encodedPassword = passwordEncoder.encode(user.getPassword());
