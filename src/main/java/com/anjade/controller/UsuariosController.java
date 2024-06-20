@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UsuariosController {
+	
+	private static final Logger logger = LogManager.getLogger(UsuariosController.class);
 
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
 	private String frontendUrl;
@@ -56,10 +60,13 @@ public class UsuariosController {
 
 	@PostMapping
 	public ResponseEntity<UsuariosDto> saveOrUpdate(@RequestBody String json) {
+		logger.info("Entrando a servicio");
+		logger.info("JSON RECIBIDO POR HTTP:"+json);
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			UsuariosDto usuarioDto = objectMapper.readValue(json, new TypeReference<UsuariosDto>() {
 			});
+			logger.info("ID_USER a insertar:"+usuarioDto.getId_user());
 			System.out.println("id_user:" + usuarioDto.getId_user());
 			if (usuarioDto.getId_user() == null) {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
