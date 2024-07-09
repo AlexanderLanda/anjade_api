@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.anjade.entity.AfiliadosFuncionDto;
+import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.UsuariosDto;
 import com.anjade.entity.UsuariosRolDto;
 import com.anjade.exception.AfiliadosCategoriasNotFoundException;
@@ -55,8 +56,10 @@ public class UsuariosServiceImpl implements UsuariosService {
 		
 		user.setFechaAfiliacion(new Date());
 		long totalUsuarios = usuarioRepository.count();
-        String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1200);
-        user.setIdAfiliacion(numeroAfiliacion);
+		if(user.getIdAfiliacion()!=null&&!user.getIdAfiliacion().isEmpty()) {
+			String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1200);
+	        user.setIdAfiliacion(numeroAfiliacion);	
+		}
 		if((user.getPassword()!=null&&!user.getPassword().isEmpty())&&user.getPassword().length()<25) {
 			String encodedPassword = passwordEncoder.encode(user.getPassword());
 			user.setPassword(encodedPassword);
