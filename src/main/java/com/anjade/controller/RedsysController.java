@@ -28,14 +28,22 @@ public class RedsysController {
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
     private String frontendUrl;
 	
+	@Value("${MERCHANT_SECRET_KEY}")
+	private  String MERCHANT_SECRET_KEY;
+
+	@Value("${REDSYS_URL}")
+	private  String REDSYS_URL;
+	
+	@Value("${Ds_Merchant_UrlOK}")
+	private  String Ds_Merchant_UrlOK;
+
+	@Value("${Ds_Merchant_UrlKO}")
+	private  String Ds_Merchant_UrlKO;
+
 	private static final String MERCHANT_CODE = "363273228"; // Código del comercio de pruebas
     private static final String TERMINAL = "1"; // Número de terminal de pruebas
     private static final String CURRENCY = "978"; // EUR
     private static final String TRANSACTION_TYPE = "0"; // Tipo de transacción por defecto
-    private static final String MERCHANT_SECRET_KEY ="CmDrfIpxp9NVOJ4M8CbK7dU8YPR+JXX1";// Clave del comercio entorno real, Base64
-    private static final String MERCHANT_SECRET_KEY_TEST = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"; // Clave del comercio de pruebas, Base64
-    private static final String REDSYS_URL_TEST = "https://sis-t.redsys.es:25443/sis/realizarPago";
-    private static final String REDSYS_URL = "https://sis.redsys.es/sis/realizarPago";
     private static final int BIZUM = 2; // Tipo de transacción por defecto
 
     @PostMapping("/create-payment")
@@ -59,8 +67,8 @@ public class RedsysController {
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
         params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/response");
-        params.put("Ds_Merchant_UrlOK", "https://anjade.es/formulario");//"https://anjade.es/formulario" "https://localhost:4200/formulario"
-        params.put("Ds_Merchant_UrlKO",  "https://anjade.es/");//"https://anjade.es/" "https://localhost:4200/"
+        params.put("Ds_Merchant_UrlOK", Ds_Merchant_UrlOK);
+        params.put("Ds_Merchant_UrlKO",  Ds_Merchant_UrlKO);
         if (tipoPago==BIZUM) {
         	params.put("Ds_Merchant_PayMethods",  "z");
 		}
