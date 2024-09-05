@@ -44,7 +44,7 @@ public class UsuariosDto {
     @JoinColumn(name = "deporte")
 	private DeportesDto deporte;
 	
-    @JoinColumn(name = "localidad")
+	@Column(name = "localidad")
 	private String localidad;
 	
 	@Column(name = "documento")

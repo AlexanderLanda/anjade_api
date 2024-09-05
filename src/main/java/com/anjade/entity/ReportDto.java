@@ -7,11 +7,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
 @Entity
-public class Report {
+@Table(name = "reports")
+public class ReportDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,16 +24,16 @@ public class Report {
     private String descripcion;
 
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Attachment> attachments;
+    private List<AttachmentDto> attachments;
     
     
 
-	public Report() {
+	public ReportDto() {
 		super();
 	}
 
-	public Report(Long id, String afiliacionId, String nombre, String apellidos, String descripcion,
-			List<Attachment> attachments) {
+	public ReportDto(Long id, String afiliacionId, String nombre, String apellidos, String descripcion,
+			List<AttachmentDto> attachments) {
 		super();
 		this.id = id;
 		this.afiliacionId = afiliacionId;
@@ -81,11 +83,11 @@ public class Report {
 		this.descripcion = descripcion;
 	}
 
-	public List<Attachment> getAttachments() {
+	public List<AttachmentDto> getAttachments() {
 		return attachments;
 	}
 
-	public void setAttachments(List<Attachment> attachments) {
+	public void setAttachments(List<AttachmentDto> attachments) {
 		this.attachments = attachments;
 	}
 
