@@ -21,7 +21,7 @@ public class AttachmentDto {
     private String fileType;
 
     @Lob
-    @Column(name = "data", columnDefinition = "BLOB")
+    @Column(name = "data", columnDefinition = "LONGBLOB")
     private byte[] data;
 
     @ManyToOne
