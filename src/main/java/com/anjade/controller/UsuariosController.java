@@ -69,12 +69,13 @@ public class UsuariosController {
 			logger.info("ID_USER a insertar:"+usuarioDto.getId_user());
 			System.out.println("id_user:" + usuarioDto.getId_user());
 			if (usuarioDto.getId_user() == null) {
+				/*
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 				String timestamp = LocalDateTime.now().format(formatter);
 				String idAfi = "A" + timestamp.substring(timestamp.length() - 6, timestamp.length()); // ID único del
 																										// pedido
 
-				usuarioDto.setIdAfiliacion(idAfi);
+				usuarioDto.setIdAfiliacion(idAfi);<>*/
 				EstadosUsuariosDto estado = new EstadosUsuariosDto(3L, "pendiente de pago");
 				usuarioDto.setEstadoCuenta(estado);
 			}

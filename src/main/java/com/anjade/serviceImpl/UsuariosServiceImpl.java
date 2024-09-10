@@ -54,11 +54,12 @@ public class UsuariosServiceImpl implements UsuariosService {
 	@Override
 	public UsuariosDto saveOrUpdate(UsuariosDto user) {
 		
-		user.setFechaAfiliacion(new Date());
+		
 		long totalUsuarios = usuarioRepository.count();
-		if(user.getIdAfiliacion()!=null&&!user.getIdAfiliacion().isEmpty()) {
-			String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1200);
+		if(user.getIdAfiliacion()==null||user.getIdAfiliacion().isEmpty()) {
+			String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1201);
 	        user.setIdAfiliacion(numeroAfiliacion);	
+	        user.setFechaAfiliacion(new Date());
 		}
 		if((user.getPassword()!=null&&!user.getPassword().isEmpty())&&user.getPassword().length()<25) {
 			String encodedPassword = passwordEncoder.encode(user.getPassword());
