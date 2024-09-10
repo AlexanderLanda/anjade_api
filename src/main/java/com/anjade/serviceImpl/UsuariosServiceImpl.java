@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.anjade.controller.UsuariosController;
 import com.anjade.entity.AfiliadosFuncionDto;
 import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.UsuariosDto;
@@ -26,7 +29,8 @@ import com.anjade.service.UsuariosService;
 @Service
 public class UsuariosServiceImpl implements UsuariosService {
 
-
+	private static final Logger logger = LogManager.getLogger(UsuariosServiceImpl.class);
+	
 	private final PasswordEncoder passwordEncoder;
 
  

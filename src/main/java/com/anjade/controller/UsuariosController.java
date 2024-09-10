@@ -60,6 +60,7 @@ public class UsuariosController {
 
 	@PostMapping
 	public ResponseEntity<UsuariosDto> saveOrUpdate(@RequestBody String json) {
+		boolean update=true;
 		logger.info("Entrando a servicio");
 		logger.info("JSON RECIBIDO POR HTTP:"+json);
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -76,6 +77,7 @@ public class UsuariosController {
 																										// pedido
 
 				usuarioDto.setIdAfiliacion(idAfi);<>*/
+				update=false;
 				EstadosUsuariosDto estado = new EstadosUsuariosDto(3L, "pendiente de pago");
 				usuarioDto.setEstadoCuenta(estado);
 			}
@@ -88,7 +90,10 @@ public class UsuariosController {
 		        usuarioDto.setDeporte(deporte);
 			
 			UsuariosDto usuarioGuardado = usuariosService.saveOrUpdate(usuarioDto);
-			emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(), usuarioGuardado.getIdAfiliacion());
+			if(update==false) {
+				emailService.sendWelcomeEmail(usuarioGuardado.getCorreo(), usuarioGuardado.getIdAfiliacion());
+			}
+			
 			return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
 		} catch (Exception e) {
 			emailService.sendEmailError(e);
