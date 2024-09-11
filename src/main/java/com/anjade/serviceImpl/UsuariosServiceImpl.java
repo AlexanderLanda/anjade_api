@@ -59,8 +59,8 @@ public class UsuariosServiceImpl implements UsuariosService {
 	public UsuariosDto saveOrUpdate(UsuariosDto user) {
 		
 		
-		long totalUsuarios = usuarioRepository.count();
 		if(user.getIdAfiliacion()==null||user.getIdAfiliacion().isEmpty()) {
+			long totalUsuarios = usuarioRepository.count();
 			String numeroAfiliacion = String.format("AF%06d", totalUsuarios + 1201);
 	        user.setIdAfiliacion(numeroAfiliacion);	
 	        user.setFechaAfiliacion(new Date());

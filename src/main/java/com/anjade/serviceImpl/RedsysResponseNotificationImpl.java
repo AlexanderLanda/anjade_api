@@ -54,7 +54,10 @@ public class RedsysResponseNotificationImpl implements RedsysResponseNotificatio
 		System.out.println("DsMerchantParametersDto: " + merchantParams);
 		String codigoRespuesta = merchantParams.getDs_Response();
 		String idAfiliacion = merchantParams.getDs_Order();
-		UsuariosDto user = userRepository.findByIdAfiliacion(idAfiliacion);
+		
+		//Restaurar id afiliacion y borrar seteo de email
+		UsuariosDto user = userRepository.findByIdAfiliacion("AF001219");
+		user.setCorreo("alexanderlandagrandales@gmail.com");
 		System.out.println("codigoRespuesta: " + codigoRespuesta);
 		if (codigoRespuesta.equals(RESPUESTA_PAGO_APROBADO)) {
 			EstadosUsuariosDto estado = new EstadosUsuariosDto(PAGO_APROBADO_ID,PAGO_APROBADO); 
