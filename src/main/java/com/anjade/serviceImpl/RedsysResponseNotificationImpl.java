@@ -3,6 +3,7 @@ package com.anjade.serviceImpl;
 import java.io.UnsupportedEncodingException;
 
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anjade.entity.DsMerchantParametersDto;
+import com.anjade.entity.DsOrderIdAfiliacionDto;
 import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.UsuariosDto;
+import com.anjade.repository.DsOrderIdAfiliacionRepository;
 import com.anjade.repository.UsuariosRepository;
+import com.anjade.service.DsOrderIdAfiliacionService;
 import com.anjade.service.EmailService;
 import com.anjade.service.RedsysResponseNotification;
 import com.anjade.service.UsuariosService;
@@ -31,6 +35,11 @@ public class RedsysResponseNotificationImpl implements RedsysResponseNotificatio
 	public static final String PAGO_RECHAZADO = "pago rechazado";
 	public static final Long PAGO_RECHAZADO_ID = 5L;
 	
+	@Autowired
+	private DsOrderIdAfiliacionRepository repository;
+	
+	@Autowired
+	private DsOrderIdAfiliacionService dsOrderIdAfiliacionService;
 	
 	@Autowired
 	private final UsuariosService usuariosService;
@@ -53,23 +62,25 @@ public class RedsysResponseNotificationImpl implements RedsysResponseNotificatio
 
 		System.out.println("DsMerchantParametersDto: " + merchantParams);
 		String codigoRespuesta = merchantParams.getDs_Response();
-		String idAfiliacion = merchantParams.getDs_Order();
-		
+		String ds_order = merchantParams.getDs_Order();
+		DsOrderIdAfiliacionDto orderAfiliacion = repository.findByDsOrder(ds_order);
+		orderAfiliacion.setCod_response_redsys(codigoRespuesta);
+		orderAfiliacion.setFecha_de_pago(new Date());
+		orderAfiliacion= dsOrderIdAfiliacionService.saveOrUpdate(orderAfiliacion);
 		//Restaurar id afiliacion y borrar seteo de email
-		UsuariosDto user = userRepository.findByIdAfiliacion("AF001219");
-		user.setCorreo("alexanderlandagrandales@gmail.com");
+		UsuariosDto user = userRepository.findByIdAfiliacion(orderAfiliacion.getIdAfiliacion());//orderAfiliacion.getIdAfiliacion();
 		System.out.println("codigoRespuesta: " + codigoRespuesta);
 		if (codigoRespuesta.equals(RESPUESTA_PAGO_APROBADO)) {
 			EstadosUsuariosDto estado = new EstadosUsuariosDto(PAGO_APROBADO_ID,PAGO_APROBADO); 
 			user.setEstadoCuenta(estado);
 			usuariosService.saveOrUpdate(user);
-			emailService.sendEmailConfirmacionPago(user.getCorreo(), idAfiliacion);
+			emailService.sendEmailConfirmacionPago(user.getCorreo(), orderAfiliacion.getIdAfiliacion());
 		}
 		else {
 			EstadosUsuariosDto estado = new EstadosUsuariosDto(PAGO_APROBADO_ID,PAGO_RECHAZADO); 
 			user.setEstadoCuenta(estado);
 			usuariosService.saveOrUpdate(user);
-			emailService.sendEmailDePagoRechazado(user.getCorreo(), idAfiliacion);
+			emailService.sendEmailDePagoRechazado(user.getCorreo(), orderAfiliacion.getIdAfiliacion());
 		}
 	}
 

@@ -4,13 +4,16 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +24,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anjade.entity.DsOrderIdAfiliacionDto;
+import com.anjade.repository.DsOrderIdAfiliacionRepository;
+import com.anjade.service.DsOrderIdAfiliacionService;
+
 @RestController
 @RequestMapping("/api/v1/payments/")
 public class RedsysController {
+	
+	@Autowired
+	private DsOrderIdAfiliacionRepository repository;
+	
+	@Autowired
+	private DsOrderIdAfiliacionService dsOrderIdAfiliacionService;
 	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
     private String frontendUrl;
@@ -39,6 +52,10 @@ public class RedsysController {
 
 	@Value("${Ds_Merchant_UrlKO}")
 	private  String Ds_Merchant_UrlKO;
+	
+	@Value("${Ds_Merchant_MerchantURL}")
+	private  String Ds_Merchant_MerchantURL;
+	
 
 	private static final String MERCHANT_CODE = "363273228"; // Código del comercio de pruebas
     private static final String TERMINAL = "1"; // Número de terminal de pruebas
@@ -53,11 +70,23 @@ public class RedsysController {
 
         // Obtener la fecha y hora actual como una cadena
         String timestamp = LocalDateTime.now().format(formatter);
-        /*"AF"+timestamp.substring(timestamp.length()-6, timestamp.length());*/ // ID único del pedido
         
-        String order =idAfiliacion;
+        String order =dsOrderIdAfiliacionService.generateNextDsOrder();
         String amount = "2500"; // Monto en céntimos (10 euros)
-
+        
+        DsOrderIdAfiliacionDto dsOrderIDafiliado;
+        Optional<DsOrderIdAfiliacionDto> ds_order = repository.findByIdAfiliacion(idAfiliacion);
+		 if (ds_order.isPresent()) {
+			 dsOrderIDafiliado= ds_order.get();
+			 dsOrderIDafiliado.setDs_order(order);
+			 dsOrderIDafiliado.setFecha_de_pago(new Date() );
+		 }
+		 else {
+			 dsOrderIDafiliado = new DsOrderIdAfiliacionDto(idAfiliacion,order,"0",new Date() );
+		 }
+         
+		 dsOrderIDafiliado= dsOrderIdAfiliacionService.saveOrUpdate(dsOrderIDafiliado);
+        
         System.out.println(order);
         Map<String, String> params = new HashMap<>();
         params.put("Ds_Merchant_Amount", amount);
@@ -66,7 +95,7 @@ public class RedsysController {
         params.put("Ds_Merchant_Currency", CURRENCY);
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
-        params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/response");
+        params.put("Ds_Merchant_MerchantURL", Ds_Merchant_MerchantURL);
         params.put("Ds_Merchant_UrlOK", Ds_Merchant_UrlOK);
         params.put("Ds_Merchant_UrlKO",  Ds_Merchant_UrlKO);
         if (tipoPago==BIZUM) {
