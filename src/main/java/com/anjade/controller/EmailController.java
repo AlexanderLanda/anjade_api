@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anjade.entity.EmailRequest;
@@ -14,7 +15,6 @@ import com.anjade.service.EmailService;
 @RequestMapping("/api/v1")
 public class EmailController {
 
-	
 	@Autowired
 	private EmailService emailService;
 
@@ -27,7 +27,19 @@ public class EmailController {
 
 		return ResponseEntity.ok("Email enviado correctamente.");
 	}
-	
+
+	@PostMapping("/sendCuestionarioEmail")
+	public ResponseEntity<String> sendCuestionarioEmail(@RequestParam String toEmail,
+			@RequestParam String idAfiliacion) {
+
+		try {
+			emailService.sendEmailCuestionario(toEmail, idAfiliacion);
+			return ResponseEntity.ok("Email enviado correctamente.");
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Error al enviar el correo: " + e.getMessage());
+		}
+	}
+
 	@PostMapping("/send-error-email")
 	public ResponseEntity<String> sendErrorEmail(@RequestBody Object request) {
 
