@@ -1,11 +1,14 @@
 package com.anjade.serviceImpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.anjade.entity.CuestionarioDto;
+import com.anjade.entity.CuestionarioRespuestaDto;
 import com.anjade.entity.UserCuestionarioDto;
+import com.anjade.entity.UsuariosDto;
 import com.anjade.exception.AfiliadosCategoriasNotFoundException;
 import com.anjade.repository.UserCuestionarioRepository;
 import com.anjade.service.UserCuestionarioService;
@@ -26,10 +29,12 @@ public class UserCuestionarioServiceImpl implements UserCuestionarioService{
 	}
 
 	@Override
-	public UserCuestionarioDto getUserCuestionarioById(Long id) {
+	public  List<CuestionarioRespuestaDto> getCuestionarioByUserId(Long id) {
 		// TODO Auto-generated method stub
-		UserCuestionarioDto cuestionario = userCuestionarioRepository.findById(id).orElseThrow(() -> new AfiliadosCategoriasNotFoundException("Cuestionario para dicho ususario no encontrado"));
-	    return cuestionario;
+		UsuariosDto user = new UsuariosDto();
+		user.setId_user(id);
+		 List<UserCuestionarioDto> cuestionario = userCuestionarioRepository.findAllByUsuario(user);
+	    return convertToCuestionarioRespuestaDto(cuestionario);
 	}
 
 	@Override
@@ -43,5 +48,26 @@ public class UserCuestionarioServiceImpl implements UserCuestionarioService{
 		// TODO Auto-generated method stub
 		userCuestionarioRepository.deleteById(id);
 	}
+
+	@Override
+	public boolean existsCuestionarioForUser(Long userId) {
+		UsuariosDto user = new UsuariosDto();
+		user.setId_user(userId);
+        return userCuestionarioRepository.existsByUsuario(user);
+    }
+	
+	
+	private List<CuestionarioRespuestaDto> convertToCuestionarioRespuestaDto(List<UserCuestionarioDto> userCuestionarios) {
+        return userCuestionarios.stream()
+            .map(uc -> new CuestionarioRespuestaDto(
+                uc.getId(),
+                uc.getUsuario().getId_user(),
+                uc.getCuestionario().getPregunta(),
+                uc.getCuestionario().getNombreCampo(),
+                uc.getRespuesta()
+            ))
+            .collect(Collectors.toList());
+    }
+	
 
 }

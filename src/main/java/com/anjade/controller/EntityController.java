@@ -83,8 +83,6 @@ public class EntityController {
 	@Autowired
 	private final AfiliadosCategoriaService afiliadosCategoriaService;
 	@Autowired
-	private final UserCuestionarioService userCuestionarioService;
-	@Autowired
 	private final CuestionarioService cuestionarioService;
 	@Autowired
 	private final FederacionService federacionService;
@@ -94,6 +92,8 @@ public class EntityController {
 	private final TipoDocumentoService tipoDocumentoService;
 	@Autowired
 	private final UsuariosService usuariosService;
+	@Autowired
+	private final UserCuestionarioService userCuestionarioService;
 
 	
     
@@ -155,9 +155,7 @@ public class EntityController {
 		case "cuestionario":
 			entidad = cuestionarioService.getCuestionarioById(id);
 			break;
-		case "usercuestionario":
-			entidad = userCuestionarioService.getUserCuestionarioById(id);
-			break;
+		
 		case "federacion":
 			entidad = federacionService.getFederacionById(id);
 			break;
