@@ -109,6 +109,12 @@ public class UsuariosController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<UsuariosDto> getUserById(@PathVariable Long id) {
+		UsuariosDto user = usuariosService.getUsuariosById(id);
+		return ResponseEntity.ok(user);
+	}
+	
 	@GetMapping("/validate-email")
     public ResponseEntity<Boolean> validateEmail(@RequestParam String email) {
         boolean exists = usuariosService.emailExists(email);

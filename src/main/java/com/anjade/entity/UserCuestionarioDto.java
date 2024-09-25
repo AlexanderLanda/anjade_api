@@ -19,7 +19,7 @@ public class UserCuestionarioDto {
     private Long id;
     
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "user")
     private UsuariosDto usuario;
 
     @ManyToOne
