@@ -92,7 +92,7 @@ public class RedsysController {
         params.put("Ds_Merchant_Currency", CURRENCY);
         params.put("Ds_Merchant_TransactionType", TRANSACTION_TYPE);
         params.put("Ds_Merchant_Terminal", TERMINAL);
-        params.put("Ds_Merchant_MerchantURL", "https://outstanding-wonder-production.up.railway.app/api/v1/payment/response");
+        params.put("Ds_Merchant_MerchantURL", "https://anjadeapi-production.up.railway.app/api/v1/payment/response");
         // anjadeapi-production.up.railway.app
         //outstanding-wonder-production.up.railway.app
         params.put("Ds_Merchant_UrlOK", Ds_Merchant_UrlOK);
