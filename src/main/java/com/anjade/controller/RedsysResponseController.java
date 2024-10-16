@@ -22,6 +22,9 @@ public class RedsysResponseController {
 	@Autowired
     private EmailService emailService;
 	
+	@Autowired
+	private RedsysResponseNotification redsysResponseServiceNotification;
+	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
     private String frontendUrl;
 	
@@ -29,13 +32,17 @@ public class RedsysResponseController {
 	@PostMapping("/response")
     public void handleResponse(@RequestBody String response) throws JsonMappingException, JsonProcessingException {
         // Lógica para manejar la respuesta de Redsys
-		/*Map<String, String> parseParameters = redsysResponseServiceNotification.parseParameters(response);
+		System.out.println("Response from Redsys: " + response);
+	       
+        emailService.sendRedsysResponseEmail("alexanderlandagrandales@gmail.com",response);
+		
+		Map<String, String> parseParameters = redsysResponseServiceNotification.parseParameters(response);
 		parseParameters.forEach((key, value) -> System.out.println(key + ": " + value));
         String signatureVersion = parseParameters.get("Ds_SignatureVersion");
         String merchantParameters = parseParameters.get("Ds_MerchantParameters");
-        String signature = parseParameters.get("Ds_Signature");*/
+        String signature = parseParameters.get("Ds_Signature");
         
-       // redsysResponseServiceNotification.readNotificatinoRedsysResponse(merchantParameters);
+        redsysResponseServiceNotification.readNotificatinoRedsysResponse(merchantParameters);
         
     }
 	
