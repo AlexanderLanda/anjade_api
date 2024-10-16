@@ -14,6 +14,7 @@ import com.anjade.entity.DsMerchantParametersDto;
 import com.anjade.entity.DsOrderIdAfiliacionDto;
 import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.UsuariosDto;
+import com.anjade.redsys.ApiMacSha256;
 import com.anjade.repository.DsOrderIdAfiliacionRepository;
 import com.anjade.repository.UsuariosRepository;
 import com.anjade.service.DsOrderIdAfiliacionService;
@@ -24,7 +25,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import sis.redsys.api.ApiMacSha256;
 
 @Service
 public class RedsysResponseNotificationImpl implements RedsysResponseNotification {

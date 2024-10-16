@@ -105,7 +105,7 @@
 
 		<!-- Otras dependencias -->
 
-		<!-- Redsys libraries -->
+		<!-- Redsys libraries
 		<dependency>
 			<groupId>com.redsys</groupId>
 			<artifactId>apiSha256</artifactId>
@@ -115,7 +115,7 @@
 			<groupId>com.redsys</groupId>
 			<artifactId>sis-rest-api</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>
