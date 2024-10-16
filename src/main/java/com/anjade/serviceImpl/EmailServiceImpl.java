@@ -1,5 +1,9 @@
 package com.anjade.serviceImpl;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -19,25 +23,18 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 	
 	 public void sendWelcomeEmail(String toEmail, String idAfiliacion) {
-	     /*   SimpleMailMessage message = new SimpleMailMessage();
-	        message.setTo(toEmail);
-	        message.setSubject("Bienvenido a ANJADE");
-	        message.setText("Bienvenido ANJADE. Su número de afiliación es:"+idAfiliacion);
-	        message.setFrom("anjade@anjade.es");
-	        mailSender.send(message);*/
 		 
-		 
-		  MimeMessage message = mailSender.createMimeMessage();
+		 MimeMessage message = mailSender.createMimeMessage();
 		    try {
 		        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		        helper.setTo(toEmail);
-		        helper.setSubject("Bienvenido a ANJADE");
+		        helper.setSubject("Cuestionario de Afiliados ANJADE");
 
 		        // HTML content
-		        String htmlContent = "<html><body>"
-		                + "<p>Bienvenido a ANJADE-DIGNIDAD DEPORTIVA. Tú número de afiliación es: " + idAfiliacion + "</p>"
-		                + "<img src='cid:imagen'/>"
-		                + "</body></html>";
+		        String htmlContent = readEmailTemplate("cuestionario_email.html");
+		        // Reemplaza los placeholders en la plantilla
+		        htmlContent = htmlContent.replace("${idAfiliacion}", idAfiliacion);
+
 		        helper.setText(htmlContent, true);
 
 		        // Add the image as an attachment with content ID
@@ -51,8 +48,14 @@ public class EmailServiceImpl implements EmailService {
 		        mailSender.send(message);
 		    } catch (MessagingException e) {
 		        e.printStackTrace();
-		    }
-	    }
+		    } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			
+		}
 	 
 	 public  void sendRedsysResponseEmail(String toEmail, String response) {
 		 SimpleMailMessage message = new SimpleMailMessage();
@@ -148,5 +151,45 @@ public class EmailServiceImpl implements EmailService {
 		
 		
 	}
+
+	@Override
+	public void sendEmailCuestionario(String toEmail,String idAfiliacion) {
+		MimeMessage message = mailSender.createMimeMessage();
+	    try {
+	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        helper.setTo(toEmail);
+	        helper.setSubject("Cuestionario de Afiliados ANJADE");
+
+	        // HTML content
+	        String htmlContent = readEmailTemplate("cuestionario_email.html");
+	        // Reemplaza los placeholders en la plantilla
+	        htmlContent = htmlContent.replace("${idAfiliacion}", idAfiliacion);
+
+	        helper.setText(htmlContent, true);
+
+	        // Add the image as an attachment with content ID
+	        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+	        helper.addInline("imagen", image);
+
+	        // Set sender
+	        helper.setFrom("anjade@anjade.es");
+
+	        // Send the email
+	        mailSender.send(message);
+	    } catch (MessagingException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		
+	}
+	
+	private String readEmailTemplate(String templateName) throws IOException {
+        ClassPathResource resource = new ClassPathResource("templates/" + templateName);
+        return new String(Files.readAllBytes(resource.getFile().toPath()), StandardCharsets.UTF_8);
+    }
 
 }

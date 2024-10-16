@@ -11,4 +11,6 @@ public interface EmailService {
 	void sendEmailError(Object error);
 	
 	 void sendEmailDePagoRechazado(String toEmail, String idAfiliacion) ;
+	 
+	void sendEmailCuestionario(String toEmail, String idAfiliacion);
 }

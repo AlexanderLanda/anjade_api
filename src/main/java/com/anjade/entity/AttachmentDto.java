@@ -9,6 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "attachments")
@@ -19,11 +23,15 @@ public class AttachmentDto {
 
     private String fileName;
     private String fileType;
+    
+    @Column(name = "create_date")
+    private Date createdAt;
 
     @Lob
     @Column(name = "data", columnDefinition = "LONGBLOB")
     private byte[] data;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "report_id")
     private ReportDto report;
@@ -36,13 +44,14 @@ public class AttachmentDto {
 
 
 
-	public AttachmentDto(Long id, String fileName, String fileType, byte[] data, ReportDto report) {
+	public AttachmentDto(Long id, String fileName, String fileType, byte[] data, ReportDto report,Date createdAt) {
 		super();
 		this.id = id;
 		this.fileName = fileName;
 		this.fileType = fileType;
 		this.data = data;
 		this.report = report;
+		this.createdAt = createdAt;
 	}
 
 
@@ -105,6 +114,19 @@ public class AttachmentDto {
 		this.report = report;
 	}
 
+
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	
     
     // Getters and Setters
 }

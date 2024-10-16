@@ -2,6 +2,7 @@ package com.anjade.entity;
 
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,6 +24,12 @@ public class ReportDto {
     private String nombre;
     private String apellidos;
     private String descripcion;
+    private String telefono;
+    private String email;
+    
+    @Column(name = "created_at")
+    private Date createDate;
+
 
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AttachmentDto> attachments;
@@ -33,7 +41,7 @@ public class ReportDto {
 	}
 
 	public ReportDto(Long id, String afiliacionId, String nombre, String apellidos, String descripcion,
-			List<AttachmentDto> attachments) {
+			List<AttachmentDto> attachments,Date createDate) {
 		super();
 		this.id = id;
 		this.afiliacionId = afiliacionId;
@@ -41,6 +49,7 @@ public class ReportDto {
 		this.apellidos = apellidos;
 		this.descripcion = descripcion;
 		this.attachments = attachments;
+		this.createDate = createDate;
 	}
 
 	public Long getId() {
@@ -91,5 +100,30 @@ public class ReportDto {
 		this.attachments = attachments;
 	}
 
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String correo) {
+		this.email = correo;
+	}
+
+	
     // Getters and Setters
 }
