@@ -1,6 +1,7 @@
 package com.anjade.serviceImpl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -28,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
 		    try {
 		        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		        helper.setTo(toEmail);
-		        helper.setSubject("Cuestionario de Afiliados ANJADE");
+		        helper.setSubject("Bienvenido ANJADE-Dignidad Deportiva");
 
 		        // HTML content
 		        String htmlContent = readEmailTemplate("cuestionario_email.html");
@@ -188,8 +189,11 @@ public class EmailServiceImpl implements EmailService {
 	}
 	
 	private String readEmailTemplate(String templateName) throws IOException {
-        ClassPathResource resource = new ClassPathResource("templates/" + templateName);
-        return new String(Files.readAllBytes(resource.getFile().toPath()), StandardCharsets.UTF_8);
-    }
+		ClassPathResource resource = new ClassPathResource("templates/" + templateName);
 
+	    // Usa un InputStream para leer el archivo en lugar de getFile()
+	    try (InputStream inputStream = resource.getInputStream()) {
+	        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+	    }
+	}
 }
