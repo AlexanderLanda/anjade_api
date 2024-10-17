@@ -28,6 +28,9 @@ public class EmailServiceImpl implements EmailService {
 	@Value("${base.url}") // Inyecta el valor de frontend.url
     private String baseUrl;
 	
+	@Value("${frontend.url}") // Inyecta el valor de frontend.url
+    private String frontURL;
+	
 	private static final int TARGETA = 1; // Código del comercio de pruebas
 	private static final int BIZUM = 2; // Código del comercio de pruebas
 	
@@ -208,14 +211,9 @@ public class EmailServiceImpl implements EmailService {
 		        // HTML content
 		        String htmlContent = readEmailTemplate("payment_reminder_template.html");
 		        // Reemplaza los placeholders en la plantilla
-	            String creditCardUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + URLEncoder.encode(idAfiliacion.toString(), StandardCharsets.UTF_8) + 
-	                    "&tipoPago=" + URLEncoder.encode("1", StandardCharsets.UTF_8);
+	            String frontUrl = frontURL + "/reenviarPago?idAfiliacion=" + URLEncoder.encode(idAfiliacion.toString(), StandardCharsets.UTF_8);
 	            
-	            String bizumUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + URLEncoder.encode(idAfiliacion.toString(), StandardCharsets.UTF_8) + 
-	                    "&tipoPago=" + URLEncoder.encode("2", StandardCharsets.UTF_8);
-
-	            htmlContent = htmlContent.replace("${creditCardUrl}", creditCardUrl);
-	            htmlContent = htmlContent.replace("${bizumUrl}", bizumUrl);
+	            htmlContent = htmlContent.replace("${anjadeFrontURL}", frontUrl);
 
 
 		        helper.setText(htmlContent, true);

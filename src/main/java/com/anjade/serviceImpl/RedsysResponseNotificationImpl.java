@@ -81,6 +81,7 @@ public class RedsysResponseNotificationImpl implements RedsysResponseNotificatio
 			user.setEstadoCuenta(estado);
 			usuariosService.saveOrUpdate(user);
 			emailService.sendEmailDePagoRechazado(user.getCorreo(), orderAfiliacion.getIdAfiliacion());
+			emailService.sendPaymentReminderEmail(user.getCorreo(), orderAfiliacion.getIdAfiliacion());
 		}
 	}
 

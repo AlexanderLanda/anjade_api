@@ -32,9 +32,6 @@ public class RedsysResponseController {
 	@PostMapping("/response")
     public void handleResponse(@RequestBody String response) throws JsonMappingException, JsonProcessingException {
         // Lógica para manejar la respuesta de Redsys
-		System.out.println("Response from Redsys: " + response);
-	       
-        emailService.sendRedsysResponseEmail("alexanderlandagrandales@gmail.com",response);
 		
 		Map<String, String> parseParameters = redsysResponseServiceNotification.parseParameters(response);
 		parseParameters.forEach((key, value) -> System.out.println(key + ": " + value));
