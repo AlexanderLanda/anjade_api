@@ -2,6 +2,7 @@ package com.anjade.serviceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -207,8 +208,11 @@ public class EmailServiceImpl implements EmailService {
 		        // HTML content
 		        String htmlContent = readEmailTemplate("payment_reminder_template.html");
 		        // Reemplaza los placeholders en la plantilla
-	            String creditCardUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + idAfiliacion+"&tipoPago="+TARGETA;
-	            String bizumUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + idAfiliacion+"&tipoPago="+BIZUM;
+	            String creditCardUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + URLEncoder.encode(idAfiliacion.toString(), StandardCharsets.UTF_8) + 
+	                    "&tipoPago=" + URLEncoder.encode("1", StandardCharsets.UTF_8);
+	            
+	            String bizumUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + URLEncoder.encode(idAfiliacion.toString(), StandardCharsets.UTF_8) + 
+	                    "&tipoPago=" + URLEncoder.encode("2", StandardCharsets.UTF_8);
 
 	            htmlContent = htmlContent.replace("${creditCardUrl}", creditCardUrl);
 	            htmlContent = htmlContent.replace("${bizumUrl}", bizumUrl);
