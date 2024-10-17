@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +23,12 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
     private JavaMailSender mailSender;
+	
+	@Value("${base.url}") // Inyecta el valor de frontend.url
+    private String baseUrl;
+	
+	private static final int TARGETA = 1; // Código del comercio de pruebas
+	private static final int BIZUM = 2; // Código del comercio de pruebas
 	
 	 public void sendWelcomeEmail(String toEmail, String idAfiliacion) {
 		 
@@ -187,6 +194,47 @@ public class EmailServiceImpl implements EmailService {
 
 		
 	}
+	
+	
+	public void sendPaymentReminderEmail(String toEmail, String idAfiliacion) {
+		 
+		 MimeMessage message = mailSender.createMimeMessage();
+		    try {
+		        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		        helper.setTo(toEmail);
+		        helper.setSubject("Recordatorio de Pago Pendiente ANJADE-Dignidad Deportiva");
+
+		        // HTML content
+		        String htmlContent = readEmailTemplate("payment_reminder_template.html");
+		        // Reemplaza los placeholders en la plantilla
+	            String creditCardUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + idAfiliacion+"&tipoPago="+TARGETA;
+	            String bizumUrl = baseUrl + "/payments/create-payment?idAfiliacion=" + idAfiliacion+"&tipoPago="+BIZUM;
+
+	            htmlContent = htmlContent.replace("${creditCardUrl}", creditCardUrl);
+	            htmlContent = htmlContent.replace("${bizumUrl}", bizumUrl);
+
+
+		        helper.setText(htmlContent, true);
+
+		        // Add the image as an attachment with content ID
+		        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+		        helper.addInline("imagen", image);
+
+		        // Set sender
+		        helper.setFrom("anjade@anjade.es");
+
+		        // Send the email
+		        mailSender.send(message);
+		    } catch (MessagingException e) {
+		        e.printStackTrace();
+		    } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			
+		}
 	
 	private String readEmailTemplate(String templateName) throws IOException {
 		ClassPathResource resource = new ClassPathResource("templates/" + templateName);

@@ -47,4 +47,13 @@ public class EmailController {
 
 		return ResponseEntity.ok("Email enviado correctamente.");
 	}
+	
+	@PostMapping("/send-payment-reminder")
+	public ResponseEntity<String> sendPaymentReminderEmail(@RequestParam String toEmail,@RequestParam String idAfiliacion) {
+
+		emailService.sendPaymentReminderEmail(toEmail,idAfiliacion);
+
+		return ResponseEntity.ok("Email enviado correctamente.");
+	}
+	
 }

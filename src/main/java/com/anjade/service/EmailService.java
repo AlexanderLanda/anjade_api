@@ -13,4 +13,6 @@ public interface EmailService {
 	 void sendEmailDePagoRechazado(String toEmail, String idAfiliacion) ;
 	 
 	void sendEmailCuestionario(String toEmail, String idAfiliacion);
+	
+	default void sendPaymentReminderEmail(String toEmail, String idAfiliacion) {}
 }
