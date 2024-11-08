@@ -21,6 +21,7 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
+    @PostMapping
     public ResponseEntity<Noticia> crearNoticia(@RequestBody NoticiaDTO noticiaDTO) {
         Noticia nuevaNoticia = noticiaService.crearNoticia(noticiaDTO);
         return ResponseEntity.ok(nuevaNoticia);
