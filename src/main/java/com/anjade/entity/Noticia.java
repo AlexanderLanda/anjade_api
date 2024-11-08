@@ -31,6 +31,7 @@ public class Noticia {
     private String tipo;
     private LocalDateTime fechaInsercion;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes = new ArrayList<>();
 

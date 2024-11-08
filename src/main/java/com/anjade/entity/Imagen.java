@@ -12,6 +12,7 @@ public class Imagen {
     private Long id;
     private String urlImagen;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "noticia_id")
     private Noticia noticia;
