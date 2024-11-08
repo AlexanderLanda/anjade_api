@@ -81,7 +81,6 @@ public class NoticiaServiceImpl implements NoticiaService {
             Noticia noticia = noticiaRepository.findById(noticiaId).orElse(null);
             if (noticia != null) {
                 for (Imagen imagen : noticia.getImagenes()) {
-                    imagen.setContenidoTemporal(null);
                     imagenRepository.save(imagen);
                 }
             }

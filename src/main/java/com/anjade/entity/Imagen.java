@@ -33,12 +33,11 @@ public class Imagen {
 	}
 
 
-	public Imagen(Long id, String urlImagen, Noticia noticia, byte[] contenidoTemporal) {
+	public Imagen(Long id, String urlImagen, Noticia noticia) {
 		super();
 		this.id = id;
 		this.urlImagen = urlImagen;
 		this.noticia = noticia;
-		this.contenidoTemporal = contenidoTemporal;
 	}
 	
 	
@@ -68,14 +67,8 @@ public class Imagen {
 	}
 
 
-	public byte[] getContenidoTemporal() {
-		return contenidoTemporal;
-	}
 
 
-	public void setContenidoTemporal(byte[] contenidoTemporal) {
-		this.contenidoTemporal = contenidoTemporal;
-	}
 
     
 }
