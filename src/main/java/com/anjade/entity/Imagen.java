@@ -1,21 +1,28 @@
 package com.anjade.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "imagenes")
 public class Imagen {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "url_imagen")
-    private String urlImagen;
+    private String urlImagen; // Aquí guardamos la ruta o nombre del archivo
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "noticia_id")
     private Noticia noticia;
 
+    @Lob
+    @Column(name = "contenido_temporal")
+    private byte[] contenidoTemporal;
     
     
     
@@ -24,12 +31,16 @@ public class Imagen {
 		super();
 	}
 
-	public Imagen(Long id, String urlImagen, Noticia noticia) {
+
+	public Imagen(Long id, String urlImagen, Noticia noticia, byte[] contenidoTemporal) {
 		super();
 		this.id = id;
 		this.urlImagen = urlImagen;
 		this.noticia = noticia;
+		this.contenidoTemporal = contenidoTemporal;
 	}
+	
+	
 
 	public Long getId() {
 		return id;
@@ -53,6 +64,16 @@ public class Imagen {
 
 	public void setNoticia(Noticia noticia) {
 		this.noticia = noticia;
+	}
+
+
+	public byte[] getContenidoTemporal() {
+		return contenidoTemporal;
+	}
+
+
+	public void setContenidoTemporal(byte[] contenidoTemporal) {
+		this.contenidoTemporal = contenidoTemporal;
 	}
 
     

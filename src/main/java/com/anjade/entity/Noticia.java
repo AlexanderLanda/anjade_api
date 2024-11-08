@@ -3,6 +3,8 @@ package com.anjade.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -21,29 +23,30 @@ import jakarta.persistence.Enumerated;
 @Table(name = "noticias")
 public class Noticia {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private String titulo;
+    @Column(nullable = false)
+    private String titulo;
 
-	@Column(nullable = false)
-	private String linkOriginal;
+    @Column(nullable = false)
+    private String linkOriginal;
 
-	@OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Imagen> imagenes;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenes;
 
-	@Column(nullable = false)
-	private LocalDateTime fechaInsercion;
+    @Column(nullable = false)
+    private LocalDateTime fechaInsercion;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private TipoNoticia tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoNoticia tipo;
 
-	public enum TipoNoticia {
-		PARTICULAR, GENERAL
-	}
+    public enum TipoNoticia {
+        PARTICULAR, GENERAL
+    }
 
 	
 

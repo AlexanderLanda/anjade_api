@@ -5,25 +5,34 @@ import com.anjade.entity.Noticia;
 import com.anjade.service.NoticiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/noticias")
 public class NoticiaController {
 
-	@Autowired
+    @Autowired
     private NoticiaService noticiaService;
 
-    @PostMapping
-    public ResponseEntity<Noticia> crearNoticia(@RequestBody NoticiaRequest noticiaRequest) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Noticia> crearNoticia(
+            @RequestParam String titulo,
+            @RequestParam String linkOriginal,
+            @RequestParam String tipo,
+            @RequestParam("imagenes") List<MultipartFile> imagenes) {
+        
         Noticia noticia = new Noticia();
-        noticia.setTitulo(noticiaRequest.getTitulo());
-        noticia.setLinkOriginal(noticiaRequest.getLinkOriginal());
-        noticia.setTipo(noticiaRequest.getTipo());
-        return ResponseEntity.ok(noticiaService.crearNoticia(noticia, noticiaRequest.getUrlsImagenes()));
+        noticia.setTitulo(titulo);
+        noticia.setLinkOriginal(linkOriginal);
+        noticia.setTipo(Noticia.TipoNoticia.valueOf(tipo));
+        
+        return ResponseEntity.ok(noticiaService.crearNoticia(noticia, imagenes));
     }
 
     @GetMapping
@@ -38,8 +47,9 @@ public class NoticiaController {
 class NoticiaRequest {
     private String titulo;
     private String linkOriginal;
-    private Noticia.TipoNoticia tipo;
-    private List<String> urlsImagenes;
+    private String tipo;
+    private List<String> imagenes;
+    
 	public String getTitulo() {
 		return titulo;
 	}
@@ -52,17 +62,17 @@ class NoticiaRequest {
 	public void setLinkOriginal(String linkOriginal) {
 		this.linkOriginal = linkOriginal;
 	}
-	public Noticia.TipoNoticia getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
-	public void setTipo(Noticia.TipoNoticia tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	public List<String> getUrlsImagenes() {
-		return urlsImagenes;
+	public List<String> getImagenes() {
+		return imagenes;
 	}
-	public void setUrlsImagenes(List<String> urlsImagenes) {
-		this.urlsImagenes = urlsImagenes;
+	public void setImagenes(List<String> imagenes) {
+		this.imagenes = imagenes;
 	}
 
     // Getters y setters
