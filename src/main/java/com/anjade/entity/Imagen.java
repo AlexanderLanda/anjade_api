@@ -20,10 +20,11 @@ public class Imagen {
     @JoinColumn(name = "noticia_id")
     private Noticia noticia;
 
+    /*
     @Lob
     @Column(name = "contenido_temporal")
     private byte[] contenidoTemporal;
-    
+    */
     
     
     
