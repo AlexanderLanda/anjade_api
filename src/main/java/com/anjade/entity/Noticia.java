@@ -1,6 +1,7 @@
 package com.anjade.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -22,31 +23,18 @@ import jakarta.persistence.Enumerated;
 @Entity
 @Table(name = "noticias")
 public class Noticia {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String titulo;
-
-    @Column(nullable = false)
     private String linkOriginal;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Imagen> imagenes;
-
-    @Column(nullable = false)
+    private String tipo;
     private LocalDateTime fechaInsercion;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoNoticia tipo;
+    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenes = new ArrayList<>();
 
-    public enum TipoNoticia {
-        PARTICULAR, GENERAL
-    }
+    // Getters y setters
 
 	
 
@@ -54,16 +42,20 @@ public class Noticia {
 		super();
 	}
 
-	public Noticia(Long id, String titulo, String linkOriginal, List<Imagen> imagenes, LocalDateTime fechaInsercion,
-			TipoNoticia tipo) {
+
+	
+	public Noticia(Long id, String titulo, String linkOriginal, String tipo, LocalDateTime fechaInsercion,
+			List<Imagen> imagenes) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
 		this.linkOriginal = linkOriginal;
-		this.imagenes = imagenes;
-		this.fechaInsercion = fechaInsercion;
 		this.tipo = tipo;
+		this.fechaInsercion = fechaInsercion;
+		this.imagenes = imagenes;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -99,13 +91,6 @@ public class Noticia {
 		this.fechaInsercion = fechaInsercion;
 	}
 
-	public TipoNoticia getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoNoticia tipo) {
-		this.tipo = tipo;
-	}
 
 	public List<Imagen> getImagenes() {
 		return imagenes;
@@ -113,6 +98,16 @@ public class Noticia {
 
 	public void setImagenes(List<Imagen> imagenes) {
 		this.imagenes = imagenes;
+	}
+
+
+	public String getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 	

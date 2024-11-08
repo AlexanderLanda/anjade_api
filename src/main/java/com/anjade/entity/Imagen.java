@@ -7,25 +7,14 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "imagenes")
 public class Imagen {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String urlImagen;
 
-    @Column(name = "url_imagen")
-    private String urlImagen; // Aquí guardamos la ruta o nombre del archivo
-
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "noticia_id")
     private Noticia noticia;
-
-    /*
-    @Lob
-    @Column(name = "contenido_temporal")
-    private byte[] contenidoTemporal;
-    */
-    
     
     
 	public Imagen() {

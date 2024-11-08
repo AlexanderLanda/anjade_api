@@ -2,6 +2,7 @@ package com.anjade.controller;
 
 
 import com.anjade.entity.Noticia;
+import com.anjade.entity.NoticiaDTO;
 import com.anjade.service.NoticiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,27 +21,18 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Noticia> crearNoticia(
-            @RequestParam String titulo,
-            @RequestParam String linkOriginal,
-            @RequestParam String tipo,
-            @RequestParam("imagenes") List<MultipartFile> imagenes) {
-        
-        Noticia noticia = new Noticia();
-        noticia.setTitulo(titulo);
-        noticia.setLinkOriginal(linkOriginal);
-        noticia.setTipo(Noticia.TipoNoticia.valueOf(tipo));
-        
-        return ResponseEntity.ok(noticiaService.crearNoticia(noticia, imagenes));
+    public ResponseEntity<Noticia> crearNoticia(@RequestBody NoticiaDTO noticiaDTO) {
+        Noticia nuevaNoticia = noticiaService.crearNoticia(noticiaDTO);
+        return ResponseEntity.ok(nuevaNoticia);
     }
 
     @GetMapping
     public ResponseEntity<Page<Noticia>> obtenerNoticias(
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int tamanio,
-            @RequestParam(required = false) Noticia.TipoNoticia tipo) {
-        return ResponseEntity.ok(noticiaService.obtenerNoticias(pagina, tamanio, tipo));
+            @RequestParam(required = false) String tipo) {
+        Page<Noticia> noticias = noticiaService.obtenerNoticias(pagina, tamanio, tipo);
+        return ResponseEntity.ok(noticias);
     }
 }
 

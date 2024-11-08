@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticiaRepository extends JpaRepository<Noticia, Long> {
-    Page<Noticia> findByTipoOrderByFechaInsercionDesc(Noticia.TipoNoticia tipo, Pageable pageable);
     Page<Noticia> findAllByOrderByFechaInsercionDesc(Pageable pageable);
+    Page<Noticia> findByTipo(String tipo, Pageable pageable);
 }
