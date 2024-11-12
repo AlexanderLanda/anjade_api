@@ -48,12 +48,32 @@ public class NoticiaServiceImpl implements NoticiaService {
         for (String urlImagen : noticiaDTO.getImagenes()) {
             Imagen imagen = new Imagen();
             imagen.setUrlImagen(urlImagen);
+         // Extrae el nombre de la imagen a partir de la URL
+            String nombreImagen = extraerNombreImagen(urlImagen);
+            imagen.setName(nombreImagen);  // Asigna el nombre de la imagen al campo 'name'
             imagen.setNoticia(noticia);
             noticia.getImagenes().add(imagen);
         }
 
         return noticiaRepository.save(noticia);
     }
+	
+	// Método auxiliar para extraer el nombre de la imagen desde la URL
+	private String extraerNombreImagen(String urlImagen) {
+	    if (urlImagen != null && urlImagen.contains("/")) {
+	        // Obtiene el nombre completo después del último '/'
+	        String nombreCompleto = urlImagen.substring(urlImagen.lastIndexOf('/') + 1);
+	        
+	        // Remueve la extensión del nombre de la imagen, si existe
+	        int extensionIndex = nombreCompleto.lastIndexOf('.');
+	        if (extensionIndex > 0) {
+	            return nombreCompleto.substring(0, extensionIndex); // Nombre sin extensión
+	        } else {
+	            return nombreCompleto; // Retorna el nombre completo si no hay extensión
+	        }
+	    }
+	    return null; // Retorna null si la URL es inválida
+	}
 	
 	@Async
     public void limpiarContenidoTemporalAsync(Long noticiaId) {

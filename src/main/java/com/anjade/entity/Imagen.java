@@ -11,6 +11,7 @@ public class Imagen {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String urlImagen;
+    private String name;
 
     @JsonBackReference
     @ManyToOne
@@ -23,10 +24,11 @@ public class Imagen {
 	}
 
 
-	public Imagen(Long id, String urlImagen, Noticia noticia) {
+	public Imagen(Long id, String urlImagen,String name, Noticia noticia) {
 		super();
 		this.id = id;
 		this.urlImagen = urlImagen;
+		this.name = name;
 		this.noticia = noticia;
 	}
 	
@@ -47,6 +49,18 @@ public class Imagen {
 	public void setUrlImagen(String urlImagen) {
 		this.urlImagen = urlImagen;
 	}
+
+	
+	
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 
 	public Noticia getNoticia() {
 		return noticia;
