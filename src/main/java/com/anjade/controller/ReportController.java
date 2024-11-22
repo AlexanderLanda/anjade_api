@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,7 +48,7 @@ public class ReportController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReportDto> createReport(
         @RequestPart("json") String json,
-        @RequestPart("files") List<MultipartFile> files) throws IOException {
+        @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
     	boolean update=true;
 		logger.info("Entrando a servicio");
 		logger.info("JSON RECIBIDO POR HTTP:"+json);
@@ -66,7 +67,10 @@ public class ReportController {
 				
 			}
 			
-			ReportDto reportDtoGuardado = reportService.saveReport(reportDto,files);
+			// Manejar el caso de archivos nulos o vacíos
+	        List<MultipartFile> fileList = (files != null && !files.isEmpty()) ? files : new ArrayList<>();
+			
+			ReportDto reportDtoGuardado = reportService.saveReport(reportDto,fileList);
 			
 			emailService.sendEmailNotificacionCreateReport(reportDtoGuardado);
 			//CREAR MECANISMO PARA ENVIAR CORREO DE NOTIFICACION A AFILIADOS Y A PERSONAL RESPONSABLES DE ATENDER SOLICITUD	
