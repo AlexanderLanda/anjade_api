@@ -30,10 +30,10 @@ public class ReportDto {
     private String email;
     private String referenciaReporte;
     @ManyToOne
-    @JoinColumn(name = "deporte")
+    @JoinColumn(name = "deporte_id")
 	private DeportesDto deporte;
     @ManyToOne
-    @JoinColumn(name = "provincia")
+    @JoinColumn(name = "provincia_id")
 	private ProvinciaDto provincia;
     
     @Column(name = "created_at")
