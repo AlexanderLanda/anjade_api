@@ -15,6 +15,9 @@ import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.ReportDto;
 import com.anjade.entity.ReportSummaryDto;
 import com.anjade.entity.UsuariosDto;
+import com.anjade.repository.ReportRepository;
+import com.anjade.repository.UsuariosRepository;
+import com.anjade.service.EmailService;
 import com.anjade.serviceImpl.ReportServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +34,15 @@ public class ReportController {
 	
     @Autowired
     private ReportServiceImpl reportService;
+    
+    @Autowired
+    private UsuariosRepository usuarioRepository;
+    
+    @Autowired
+    private ReportRepository reportRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReportDto> createReport(
@@ -43,10 +55,20 @@ public class ReportController {
 		try {
 			ReportDto reportDto = objectMapper.readValue(json, new TypeReference<ReportDto>() {
 			});
-			
+			String referencyReport = String.format("RE%06d", reportRepository.count()+1);
+			reportDto.setReferenciaReporte(referencyReport);
+			if (reportDto.getAfiliacionId() != null && !reportDto.getAfiliacionId().isEmpty()) {
+				
+				UsuariosDto user = usuarioRepository.findByIdAfiliacion(reportDto.getAfiliacionId());
+				reportDto.setApellidos(user.getApellidos());
+				reportDto.setNombre(user.getNombre());
+				reportDto.setEmail(user.getCorreo());
+				
+			}
 			
 			ReportDto reportDtoGuardado = reportService.saveReport(reportDto,files);
 			
+			emailService.sendEmailNotificacionCreateReport(reportDtoGuardado);
 			//CREAR MECANISMO PARA ENVIAR CORREO DE NOTIFICACION A AFILIADOS Y A PERSONAL RESPONSABLES DE ATENDER SOLICITUD	
 	        
 

@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,6 +28,13 @@ public class ReportDto {
     private String descripcion;
     private String telefono;
     private String email;
+    private String referenciaReporte;
+    @ManyToOne
+    @JoinColumn(name = "deporte")
+	private DeportesDto deporte;
+    @ManyToOne
+    @JoinColumn(name = "provincia")
+	private ProvinciaDto provincia;
     
     @Column(name = "created_at")
     private Date createDate;
@@ -40,16 +49,46 @@ public class ReportDto {
 		super();
 	}
 
-	public ReportDto(Long id, String afiliacionId, String nombre, String apellidos, String descripcion,
-			List<AttachmentDto> attachments,Date createDate) {
+	public ReportDto(Long id, String afiliacionId, String nombre, String apellidos, String descripcion, String telefono,
+			String email, String referenciaReporte, DeportesDto deporte, ProvinciaDto provincia, Date createDate,
+			List<AttachmentDto> attachments) {
 		super();
 		this.id = id;
 		this.afiliacionId = afiliacionId;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.descripcion = descripcion;
-		this.attachments = attachments;
+		this.telefono = telefono;
+		this.email = email;
+		this.referenciaReporte = referenciaReporte;
+		this.deporte = deporte;
+		this.provincia = provincia;
 		this.createDate = createDate;
+		this.attachments = attachments;
+	}
+
+	public DeportesDto getDeporte() {
+		return deporte;
+	}
+
+	public void setDeporte(DeportesDto deporte) {
+		this.deporte = deporte;
+	}
+
+	public ProvinciaDto getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(ProvinciaDto provincia) {
+		this.provincia = provincia;
+	}
+
+	public String getReferenciaReporte() {
+		return referenciaReporte;
+	}
+
+	public void setReferenciaReporte(String referenciaReporte) {
+		this.referenciaReporte = referenciaReporte;
 	}
 
 	public Long getId() {

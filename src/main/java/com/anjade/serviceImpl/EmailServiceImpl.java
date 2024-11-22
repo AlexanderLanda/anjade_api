@@ -14,6 +14,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import com.anjade.entity.ReportDto;
 import com.anjade.service.EmailService;
 
 import jakarta.mail.MessagingException;
@@ -27,6 +29,9 @@ public class EmailServiceImpl implements EmailService {
 	
 	@Value("${base.url}") // Inyecta el valor de frontend.url
     private String baseUrl;
+	
+	@Value("${responsable.report}") // Inyecta el valor de frontend.url
+    private String responsableReport;
 	
 	@Value("${frontend.url}") // Inyecta el valor de frontend.url
     private String frontURL;
@@ -245,5 +250,48 @@ public class EmailServiceImpl implements EmailService {
 	    try (InputStream inputStream = resource.getInputStream()) {
 	        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 	    }
+	}
+
+	@Override
+	public void sendEmailNotificacionCreateReport(ReportDto reportDto) {
+		 MimeMessage message = mailSender.createMimeMessage();
+		    try {
+		        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		        
+		        // Configurar destinatarios
+		        helper.setTo(new String[]{reportDto.getEmail(), responsableReport});
+		        helper.setSubject("Comunicación de Creación de Reporte sobre sucesos");
+
+		        // Leer y personalizar el contenido HTML
+		        String htmlContent = readEmailTemplate("create_report_email.html");
+		        
+		        // Determinar si es afiliado o usuario general
+		        String saludo;
+		        if (reportDto.getAfiliacionId() != null && !reportDto.getAfiliacionId().isEmpty()) {
+		            saludo = "Afiliado: " + reportDto.getAfiliacionId();
+		        } else {
+		            saludo = "Usuario: " + reportDto.getNombre() + " " + reportDto.getApellidos();
+		        }
+		        
+		        // Reemplazar placeholders
+		        htmlContent = htmlContent.replace("${saludo}", saludo);
+		        htmlContent = htmlContent.replace("${referenciaReporte}", reportDto.getReferenciaReporte());
+
+		        helper.setText(htmlContent, true);
+
+		        // Agregar imagen como adjunto inline
+		        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+		        helper.addInline("imagen", image);
+
+		        // Configurar remitente
+		        helper.setFrom("anjade@anjade.es");
+
+		        // Enviar el correo
+		        mailSender.send(message);
+		    } catch (MessagingException | IOException e) {
+		        e.printStackTrace();
+		    }
+		
+		
 	}
 }

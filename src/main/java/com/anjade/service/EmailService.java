@@ -1,5 +1,7 @@
 package com.anjade.service;
 
+import com.anjade.entity.ReportDto;
+
 public interface EmailService {
 
 	 public default void sendWelcomeEmail(String toEmail, String idAfiliacion) {}
@@ -15,4 +17,6 @@ public interface EmailService {
 	void sendEmailCuestionario(String toEmail, String idAfiliacion);
 	
 	default void sendPaymentReminderEmail(String toEmail, String idAfiliacion) {}
+	
+	void sendEmailNotificacionCreateReport(ReportDto reportDto) ;
 }
