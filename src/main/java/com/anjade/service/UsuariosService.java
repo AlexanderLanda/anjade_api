@@ -25,4 +25,5 @@ public interface UsuariosService {
 	boolean emailExists(String email);
 
 	boolean idAfiliacionExists(String id);
+	
 }

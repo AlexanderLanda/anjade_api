@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.anjade.entity.ReportDto;
+import com.anjade.entity.UsuariosDto;
+import com.anjade.repository.UsuariosRepository;
 import com.anjade.service.EmailService;
 
 import jakarta.mail.MessagingException;
@@ -31,6 +33,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
     private JavaMailSender mailSender;
+	
+	 @Autowired
+	private UsuariosRepository usuarioRepository;
 	
 	@Value("${base.url}") // Inyecta el valor de frontend.url
     private String baseUrl;
@@ -236,17 +241,29 @@ public class EmailServiceImpl implements EmailService {
 		        helper.setFrom("anjade@anjade.es");
 
 		        // Send the email
-		        mailSender.send(message);
-		    } catch (MessagingException e) {
+		        mailSender.send(message); 
+		        System.out.println("Correo enviado con éxito a: " + toEmail);
+			} catch (MessagingException e) {
+		        System.err.println("Error de mensajería: " + e.getMessage());
 		        e.printStackTrace();
-		    } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-
-			
+		    } catch (Exception e) {
+		        System.err.println("Error inesperado: " + e.getMessage());
+		        e.printStackTrace();
+		    }
 		}
+	
+	// Este método obtiene todos los usuarios con estado "Pendiente de pago" y les envía un recordatorio
+    public void sendPaymentRemindersToAll(Long estadoPendienteId) {
+        // Obtener todos los usuarios cuyo estado de cuenta es "Pendiente de pago" (usando el ID del estado)
+        List<UsuariosDto> usuarios = usuarioRepository.findByEstadoCuentaId(estadoPendienteId);
+
+        // Enviar el correo a cada usuario
+        for (UsuariosDto usuario : usuarios) {
+            sendPaymentReminderEmail(usuario.getCorreo(), usuario.getIdAfiliacion());
+        }
+    }
+	
+	
 	
 	private String readEmailTemplate(String templateName) throws IOException {
 		ClassPathResource resource = new ClassPathResource("templates/" + templateName);

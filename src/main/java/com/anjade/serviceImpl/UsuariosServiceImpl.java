@@ -121,6 +121,9 @@ public class UsuariosServiceImpl implements UsuariosService {
         
     }
 
+
+	
+
 	
 //passwordEncoder.matches(password, user.get().getPassword())
 	//password.equalsIgnoreCase(user.get().getPassword())  

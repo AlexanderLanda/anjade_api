@@ -15,5 +15,6 @@ public interface UsuariosRepository extends JpaRepository<UsuariosDto, Long>{
 	
     Optional<UsuariosDto> findByCorreo(String correo);
 
-
+ // Buscar usuarios por el id de estado de cuenta "Pendiente de pago"
+    List<UsuariosDto> findByEstadoCuentaId(Long estadoCuentaId);
 }

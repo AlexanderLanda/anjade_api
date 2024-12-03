@@ -1,6 +1,7 @@
 package com.anjade.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,6 +75,20 @@ public class EmailController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+	
+	// Endpoint para enviar recordatorio de pago a todos los usuarios con estado pendiente
+    @PostMapping("/sendPaymentReminderEmail")
+    public String sendPaymentReminderEmails(@RequestBody Map<String, Long> payload) {
+        Long estadoPendienteId = payload.get("estadoPendienteId");
+        // Llamamos al servicio para enviar los correos a todos los usuarios con el estado pendiente de pago
+        try {
+            emailService.sendPaymentRemindersToAll(estadoPendienteId);
+            return "Recordatorios de pago enviados con éxito";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Hubo un error al enviar los correos";
         }
     }
 	

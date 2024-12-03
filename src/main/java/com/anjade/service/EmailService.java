@@ -26,4 +26,6 @@ public interface EmailService {
 	void sendEmailNotificacionCreateReport(ReportDto reportDto) ;
 	
 	void sendEmail(String subject, String body, List<String> recipients, MultipartFile[] attachments) throws IOException;
+
+	void sendPaymentRemindersToAll(Long estadoPendienteId);
 }
