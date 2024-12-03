@@ -1,25 +1,30 @@
 package com.anjade.serviceImpl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.anjade.entity.ReportDto;
 import com.anjade.service.EmailService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -293,5 +298,44 @@ public class EmailServiceImpl implements EmailService {
 		    }
 		
 		
+	}
+	
+	@Override
+	public void sendEmail(String subject, String body, List<String> recipients, MultipartFile[] attachments) throws IOException {
+		try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+         // Configurar remitente
+	        helper.setFrom("anjade@anjade.es");
+            // Agregar múltiples destinatarios
+            helper.setTo(recipients.toArray(new String[0]));
+            helper.setSubject(subject);
+            helper.setText(body);
+
+            // Adjuntar los archivos
+            if (attachments != null && attachments.length > 0) {
+                for (MultipartFile attachment : attachments) {
+                    // Comprobar si el archivo tiene contenido
+                    if (!attachment.isEmpty()) {
+                        helper.addAttachment(attachment.getOriginalFilename(), attachment);
+                    }
+                }
+            }
+            
+            // Agregar imagen como adjunto inline
+	        ClassPathResource image = new ClassPathResource("templates/anjade_icono.jpg");
+	        helper.addInline("imagen", image);
+
+            // Enviar el correo
+            mailSender.send(message);
+            System.out.println("Correo enviado con éxito a: " + recipients);
+		} catch (MessagingException e) {
+	        System.err.println("Error de mensajería: " + e.getMessage());
+	        e.printStackTrace();
+	    } catch (Exception e) {
+	        System.err.println("Error inesperado: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
 }

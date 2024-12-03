@@ -1,5 +1,10 @@
 package com.anjade.service;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.anjade.entity.ReportDto;
 
 public interface EmailService {
@@ -19,4 +24,6 @@ public interface EmailService {
 	default void sendPaymentReminderEmail(String toEmail, String idAfiliacion) {}
 	
 	void sendEmailNotificacionCreateReport(ReportDto reportDto) ;
+	
+	void sendEmail(String subject, String body, List<String> recipients, MultipartFile[] attachments) throws IOException;
 }
