@@ -1,5 +1,6 @@
 package com.anjade.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,15 +81,20 @@ public class EmailController {
 	
 	// Endpoint para enviar recordatorio de pago a todos los usuarios con estado pendiente
     @PostMapping("/sendPaymentReminderEmail")
-    public String sendPaymentReminderEmails(@RequestBody Map<String, Long> payload) {
+    public ResponseEntity<Map<String, Object>> sendPaymentReminderEmails(@RequestBody Map<String, Long> payload) {
         Long estadoPendienteId = payload.get("estadoPendienteId");
         // Llamamos al servicio para enviar los correos a todos los usuarios con el estado pendiente de pago
+        Map<String, Object> response = new HashMap<>();
         try {
             emailService.sendPaymentRemindersToAll(estadoPendienteId);
-            return "Recordatorios de pago enviados con éxito";
+            response.put("error", false);
+            response.put("message", "Recordatorios de pago enviados con éxito");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Hubo un error al enviar los correos";
+            response.put("error", true);
+            response.put("message", "Hubo un error al enviar los correos");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 	
