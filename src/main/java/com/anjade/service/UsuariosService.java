@@ -19,6 +19,8 @@ public interface UsuariosService {
 	void deleteById(Long rol);
 	
 	UsuariosDto getByIdAfiliacion(String id);
+	
+	String getNameByIdAfiliacion(String id);
 
 	Optional<UsuariosDto> login(String idAfiliacion, String password);
 	

@@ -93,6 +93,14 @@ public class UsuariosServiceImpl implements UsuariosService {
 		return  usuario;
 		}
 
+	@Override
+	public String getNameByIdAfiliacion(String idAfiliacion) {
+		// TODO Auto-generated method stub
+		UsuariosDto usuario = usuarioRepository.findByIdAfiliacion(idAfiliacion);
+
+		return  usuario.getNombre()+" "+usuario.getApellidos();
+		}
+
 
 	@Override
 	public Optional<UsuariosDto> login(String idAfiliacion, String password) {

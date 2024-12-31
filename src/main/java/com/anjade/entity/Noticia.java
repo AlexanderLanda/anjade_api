@@ -35,6 +35,11 @@ public class Noticia {
     @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComentarioDto> comentarios = new ArrayList<>();
+
+    
     // Getters y setters
 
 	
@@ -46,7 +51,7 @@ public class Noticia {
 
 	
 	public Noticia(Long id, String titulo, String linkOriginal, String tipo, LocalDateTime fechaInsercion,
-			List<Imagen> imagenes) {
+			List<Imagen> imagenes,List<ComentarioDto> comentarios) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -54,6 +59,7 @@ public class Noticia {
 		this.tipo = tipo;
 		this.fechaInsercion = fechaInsercion;
 		this.imagenes = imagenes;
+		this.comentarios = comentarios;
 	}
 
 
@@ -110,6 +116,19 @@ public class Noticia {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
+
+
+	public List<ComentarioDto> getComentarios() {
+		return comentarios;
+	}
+
+
+
+	public void setComentarios(List<ComentarioDto> comentarios) {
+		this.comentarios = comentarios;
+	}
+	
 	
 	
 

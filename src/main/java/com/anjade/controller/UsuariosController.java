@@ -115,6 +115,13 @@ public class UsuariosController {
 		return ResponseEntity.ok(user);
 	}
 	
+	@GetMapping("/getname/{id}")
+	public ResponseEntity<String> getNameByIdAfiliacion(@PathVariable String id) {
+		String user = usuariosService.getNameByIdAfiliacion(id);
+		System.out.println(user);
+		return ResponseEntity.ok(user);
+	}
+	
 	@GetMapping("/validate-email")
     public ResponseEntity<Boolean> validateEmail(@RequestParam String email) {
         boolean exists = usuariosService.emailExists(email);
