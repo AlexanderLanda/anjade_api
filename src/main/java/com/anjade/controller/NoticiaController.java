@@ -64,7 +64,8 @@ public class NoticiaController {
         comentario.setFechaComentario(LocalDateTime.now());
         comentario.setIdAfiliacion(comen.getIdAfiliacion());
         comentario.setTexto(comen.getTexto());
-        
+        String nombreAfiliado = usuariosService.getNameByIdAfiliacion(comen.getIdAfiliacion());
+        comentario.setNombre(nombreAfiliado);
 
         
         ComentarioDto comentarios = comentarioRepository.save(comentario);
@@ -80,9 +81,9 @@ public class NoticiaController {
         // Recorremos la lista de comentarios y actualizamos el campo "nombre"
         for (ComentarioDto comentario : noticias) {
             String idAfiliacion = comentario.getIdAfiliacion();
-            String nombreAfiliado = usuariosService.getNameByIdAfiliacion(idAfiliacion);
-            System.out.println(nombreAfiliado);// Llamamos al servicio de usuarios
-            comentario.setNombre(nombreAfiliado); // Actualizamos el campo nombre del comentario
+           // String nombreAfiliado = usuariosService.getNameByIdAfiliacion(idAfiliacion);
+            //System.out.println(nombreAfiliado);// Llamamos al servicio de usuarios
+           // comentario.setNombre(nombreAfiliado); // Actualizamos el campo nombre del comentario
         }
         return ResponseEntity.ok(noticias);
     }
