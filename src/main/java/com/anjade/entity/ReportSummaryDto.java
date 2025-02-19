@@ -1,5 +1,7 @@
 package com.anjade.entity;
 
+import java.util.Date;
+
 public interface ReportSummaryDto {
     Long getId();
     String getAfiliacionId();
@@ -8,4 +10,6 @@ public interface ReportSummaryDto {
     String getEmail();
     String getTelefono();
     String getDescripcion();
+    Date getCreateDate();
+    String getReferenciaReporte();
 }

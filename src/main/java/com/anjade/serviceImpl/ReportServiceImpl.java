@@ -14,6 +14,7 @@ import com.anjade.repository.AttachmentRepository;
 import com.anjade.repository.ReportRepository;
 import com.anjade.service.ReportService;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -76,23 +77,44 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Transactional
-    public ReportDto updateReport(Long id, ReportDto reportDto) {
-		ReportDto existingReport = reportRepository.findById(id)
-                .orElseThrow();
+	public ReportDto updateReport(ReportDto reportDto) {
+	    ReportDto existingReport = reportRepository.findById(reportDto.getId())
+	            .orElseThrow(() -> new RuntimeException("Reporte no encontrado"));
 
-        // Actualizar los campos del reporte existente
-        existingReport.setAfiliacionId(reportDto.getAfiliacionId());
-        existingReport.setNombre(reportDto.getNombre());
-        existingReport.setApellidos(reportDto.getApellidos());
-        existingReport.setDescripcion(reportDto.getDescripcion());
-        existingReport.setEmail(reportDto.getEmail());
-        existingReport.setTelefono(reportDto.getTelefono());
+	    // Actualizar los campos básicos
+	    existingReport.setDescripcion(reportDto.getDescripcion());
 
-        // Guardar el reporte actualizado
-        ReportDto updatedReport = reportRepository.save(existingReport);
+	    // Manejo de archivos adjuntos
+	    updateAttachments(existingReport, reportDto.getAttachments());
 
-        return updatedReport;
-    }
+	    // Guardar el reporte actualizado
+	    ReportDto updatedReport = reportRepository.save(existingReport);
+	    
+	    return updatedReport;
+	}
+
+	/**
+	 * Método para actualizar la lista de archivos adjuntos
+	 */
+	private void updateAttachments(ReportDto existingReport, List<AttachmentDto> newAttachments) {
+	    // Si no hay adjuntos nuevos, eliminamos todos los existentes
+	    if (newAttachments == null || newAttachments.isEmpty()) {
+	        existingReport.getAttachments().clear();
+	    } else {
+	        // Eliminar archivos que el usuario quitó
+	        existingReport.getAttachments().removeIf(existingFile -> 
+	            newAttachments.stream().noneMatch(newFile -> newFile.getFileName().equals(existingFile.getFileName()))
+	        );
+
+	        // Agregar nuevos archivos
+	        for (AttachmentDto newFile : newAttachments) {
+	            if (existingReport.getAttachments().stream().noneMatch(f -> f.getFileName().equals(newFile.getFileName()))) {
+	                existingReport.getAttachments().add(newFile);
+	            }
+	        }
+	    }
+	}
+
 
     @Transactional
     public void deleteReport(Long id) {

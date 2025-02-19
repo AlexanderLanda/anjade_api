@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.anjade.entity.AttachmentDto;
 import com.anjade.entity.DeportesDto;
 import com.anjade.entity.EstadosUsuariosDto;
 import com.anjade.entity.ReportDto;
@@ -20,10 +21,14 @@ import com.anjade.repository.UsuariosRepository;
 import com.anjade.service.EmailService;
 import com.anjade.serviceImpl.ReportServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -98,9 +103,31 @@ public class ReportController {
         return ResponseEntity.ok(report);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ReportDto> updateReport(@PathVariable Long id, @RequestBody ReportDto reportDto) {
-        ReportDto updatedReport = reportService.updateReport(id, reportDto);
+    @PutMapping("/update")
+    public ResponseEntity<ReportDto> updateReport(@RequestPart("report") String reportJson, 
+            @RequestPart("files") List<MultipartFile> files) throws IOException {
+    	
+    	 ObjectMapper objectMapper = new ObjectMapper();
+    	 objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    	    ReportDto report = objectMapper.readValue(reportJson, ReportDto.class);
+
+    	    LocalDateTime ahora = LocalDateTime.now();
+    	    Date fechaActual = Date.from(ahora.atZone(ZoneId.systemDefault()).toInstant());
+    	    if (files != null && files.size() > 0 && !files.get(0).isEmpty()) {
+    	    	System.out.println("------------ENTROOOOOOOOOOOOOOOOOO");
+    	    	for (MultipartFile file : files) { 
+        	        AttachmentDto attachment = new AttachmentDto();
+        	        attachment.setFileName(file.getOriginalFilename());
+        	        attachment.setFileType(file.getContentType());
+        	        attachment.setData(file.getBytes());
+        	        attachment.setReport(report);
+        	        attachment.setCreatedAt(fechaActual);
+        	        report.getAttachments().add(attachment);
+        	    }
+			}
+    	    
+    	    
+        ReportDto updatedReport = reportService.updateReport(report);
         return ResponseEntity.ok(updatedReport);
     }
 
