@@ -65,7 +65,8 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<ReportDto> getAllReports() {
 		// TODO Auto-generated method stub
-		return reportRepository.findAll();
+		List<ReportDto> reports= reportRepository.findAll();
+		return reports;
 	}
 
 	@Override

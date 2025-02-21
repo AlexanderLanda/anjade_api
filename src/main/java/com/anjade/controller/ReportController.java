@@ -92,8 +92,8 @@ public class ReportController {
     }
     
     @GetMapping
-    public ResponseEntity<List<ReportSummaryDto>> getAllReports() {
-        List<ReportSummaryDto> reports = reportService.getAllReportSummaries();
+    public ResponseEntity<List<ReportDto>> getAllReports() {
+        List<ReportDto> reports = reportService.getAllReports();
         return ResponseEntity.ok(reports);
     }
 
