@@ -64,13 +64,8 @@ public class NoticiaServiceImpl implements NoticiaService {
 	        // Obtiene el nombre completo después del último '/'
 	        String nombreCompleto = urlImagen.substring(urlImagen.lastIndexOf('/') + 1);
 	        
-	        // Remueve la extensión del nombre de la imagen, si existe
-	        int extensionIndex = nombreCompleto.lastIndexOf('.');
-	        if (extensionIndex > 0) {
-	            return nombreCompleto.substring(0, extensionIndex); // Nombre sin extensión
-	        } else {
+	       
 	            return nombreCompleto; // Retorna el nombre completo si no hay extensión
-	        }
 	    }
 	    return null; // Retorna null si la URL es inválida
 	}
