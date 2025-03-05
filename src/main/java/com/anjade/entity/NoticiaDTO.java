@@ -7,17 +7,50 @@ public class NoticiaDTO {
     private String linkOriginal;
     private String tipo;
     private List<String> imagenes;
+    private boolean isPropia;
+    private String descripcion;
+
     
     
     
     
-	public NoticiaDTO(String titulo, String linkOriginal, String tipo, List<String> imagenes) {
+	public NoticiaDTO(String titulo, String linkOriginal, String tipo, List<String> imagenes, boolean isPropia,
+			String descripcion) {
 		super();
 		this.titulo = titulo;
 		this.linkOriginal = linkOriginal;
 		this.tipo = tipo;
 		this.imagenes = imagenes;
+		this.isPropia = isPropia;
+		this.descripcion = descripcion;
 	}
+	
+	
+	
+	public boolean isPropia() {
+		return isPropia;
+	}
+
+
+
+	public void setPropia(boolean isPropia) {
+		this.isPropia = isPropia;
+	}
+
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+
 	public String getTitulo() {
 		return titulo;
 	}

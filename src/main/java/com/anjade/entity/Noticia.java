@@ -30,6 +30,8 @@ public class Noticia {
     private String linkOriginal;
     private String tipo;
     private LocalDateTime fechaInsercion;
+    private boolean isPropia;
+    private String descripcion;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,15 +53,42 @@ public class Noticia {
 
 	
 	public Noticia(Long id, String titulo, String linkOriginal, String tipo, LocalDateTime fechaInsercion,
-			List<Imagen> imagenes,List<ComentarioDto> comentarios) {
+			boolean isPropia, String descripcion, List<Imagen> imagenes, List<ComentarioDto> comentarios) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
 		this.linkOriginal = linkOriginal;
 		this.tipo = tipo;
 		this.fechaInsercion = fechaInsercion;
+		this.isPropia = isPropia;
+		this.descripcion = descripcion;
 		this.imagenes = imagenes;
 		this.comentarios = comentarios;
+	}
+
+
+
+
+	public boolean isPropia() {
+		return isPropia;
+	}
+
+
+
+	public void setPropia(boolean isPropia) {
+		this.isPropia = isPropia;
+	}
+
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 

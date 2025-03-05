@@ -28,8 +28,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/reports")
@@ -130,11 +133,19 @@ public class ReportController {
         ReportDto updatedReport = reportService.updateReport(report);
         return ResponseEntity.ok(updatedReport);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
-        reportService.deleteReport(id);
-        return ResponseEntity.noContent().build();
-    }
     
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> eliminarReporte(@PathVariable Long id) {
+        if (!reportRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("mensaje", "Reporte no encontrado"));
+        }
+
+        reportRepository.deleteById(id);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("mensaje", "Reporte eliminado correctamente");
+        return ResponseEntity.ok(response);
+    }
 }

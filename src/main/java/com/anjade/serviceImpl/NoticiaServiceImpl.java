@@ -2,6 +2,8 @@ package com.anjade.serviceImpl;
 
 import com.anjade.entity.Noticia;
 import com.anjade.entity.NoticiaDTO;
+import com.anjade.entity.ReportDto;
+import com.anjade.exception.UsuariosRolNotFoundException;
 import com.anjade.entity.Imagen;
 import com.anjade.repository.ImagenRepository;
 import com.anjade.repository.NoticiaRepository;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +47,8 @@ public class NoticiaServiceImpl implements NoticiaService {
         noticia.setLinkOriginal(noticiaDTO.getLinkOriginal());
         noticia.setTipo(noticiaDTO.getTipo());
         noticia.setFechaInsercion(LocalDateTime.now());
-
+        noticia.setDescripcion(noticiaDTO.getDescripcion());
+        noticia.setPropia(noticiaDTO.isPropia());
         for (String urlImagen : noticiaDTO.getImagenes()) {
             Imagen imagen = new Imagen();
             imagen.setUrlImagen(urlImagen);
@@ -96,5 +100,44 @@ public class NoticiaServiceImpl implements NoticiaService {
 	        return noticiaRepository.findAll(pageRequest);
 	    }
 	}
+	
+	@Override
+	public List<Noticia> getNoticias(){
+		// TODO Auto-generated method stub
+		List<Noticia> noticia = noticiaRepository.findAll();
+		return noticia;
+	}
+
+	@Override
+	public Noticia getNoticiaById(long id) {
+		// TODO Auto-generated method stub
+		Noticia noticia = noticiaRepository.findById(id).orElseThrow(() -> new UsuariosRolNotFoundException("Noticia no encontrado"));
+		return noticia;
+	}
+	
+	@Override
+	public Optional<Noticia> actualizarNoticia(Long id, NoticiaDTO noticiaActualizada) {
+	    return noticiaRepository.findById(id).map(noticia -> {
+
+	        noticia.setTitulo(noticiaActualizada.getTitulo());
+	        noticia.setLinkOriginal(noticiaActualizada.getLinkOriginal());
+	        noticia.setTipo(noticiaActualizada.getTipo());
+	        noticia.getImagenes().clear();
+	        for (String urlImagen : noticiaActualizada.getImagenes()) {
+	            Imagen imagen = new Imagen();
+	            imagen.setUrlImagen(urlImagen);
+	         // Extrae el nombre de la imagen a partir de la URL
+	            String nombreImagen = extraerNombreImagen(urlImagen);
+	            imagen.setName(nombreImagen);  // Asigna el nombre de la imagen al campo 'name'
+	            imagen.setNoticia(noticia);
+	            noticia.getImagenes().add(imagen);
+	        }
+	        noticia.setDescripcion(noticiaActualizada.getDescripcion());
+	        noticia.setPropia(noticiaActualizada.isPropia());
+
+	        return noticiaRepository.save(noticia);
+	    });
+	}
+
 	
 }
